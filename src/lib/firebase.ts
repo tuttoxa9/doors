@@ -1,19 +1,21 @@
 import { initializeApp } from 'firebase/app'
 import { getFirestore } from 'firebase/firestore'
 import { getStorage } from 'firebase/storage'
+import { getAnalytics } from 'firebase/analytics'
 
 const firebaseConfig = {
-  apiKey: "AIzaSyAmDcb4Mpuz8-BihRcGmcPuwv9TR78MjF0",
-  authDomain: "doors-8531d.firebaseapp.com",
-  projectId: "doors-8531d",
-  storageBucket: "doors-8531d.appspot.com",
-  messagingSenderId: "1010091745434",
-  appId: "1:1010091745434:web:a07b88554757541dcf7f23",
-  measurementId: "G-0L57FE34HY"
+  apiKey: "AIzaSyDYw0nAtJ51i5eSi-KFjKYlV3CttdBkJPc",
+  authDomain: "doors-24bf2.firebaseapp.com",
+  projectId: "doors-24bf2",
+  storageBucket: "doors-24bf2.firebasestorage.app",
+  messagingSenderId: "885264700582",
+  appId: "1:885264700582:web:4698ca161e19b41bfd9067",
+  measurementId: "G-5M6BG83ZGS"
 }
 
 // Инициализируем Firebase
 const app = initializeApp(firebaseConfig)
+const analytics = getAnalytics(app)
 
 // Экспортируем сервисы
 export const db = getFirestore(app)
