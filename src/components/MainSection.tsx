@@ -188,7 +188,7 @@ export default function MainSection({ showContactForm = false, setShowContactFor
                     />
                     {isPhoneValid && (
                       <div className="absolute right-4 top-1/2 transform -translate-y-1/2">
-                        <Check className="w-5 h-5 text-green-600" />
+                        <Check className="w-5 h-5 text-black" />
                       </div>
                     )}
                   </div>
@@ -300,12 +300,16 @@ export default function MainSection({ showContactForm = false, setShowContactFor
 
       {/* Contact Modal */}
       {showContactForm && (
-        <div className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+        <div
+          className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4"
+          onClick={() => setShowContactForm?.(false)}
+        >
           <motion.div
             initial={{ opacity: 0, scale: 0.95 }}
             animate={{ opacity: 1, scale: 1 }}
             exit={{ opacity: 0, scale: 0.95 }}
             className="bg-white rounded-2xl p-8 max-w-md w-full max-h-[90vh] overflow-y-auto"
+            onClick={(e) => e.stopPropagation()}
           >
             <div className="flex justify-between items-center mb-6">
               <h3 className="text-2xl font-bold text-zinc-900 font-durik">Заказать консультацию</h3>
@@ -348,7 +352,7 @@ export default function MainSection({ showContactForm = false, setShowContactFor
                   />
                   {isPhoneValid && (
                     <div className="absolute right-4 top-1/2 transform -translate-y-1/2">
-                      <Check className="w-5 h-5 text-green-600" />
+                      <Check className="w-5 h-5 text-black" />
                     </div>
                   )}
                 </div>
