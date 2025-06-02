@@ -1,44 +1,22 @@
-// Instructions: Создаю список задач для проекта
+# Doors Project TODO List
 
-# Список задач для проекта DOORS
+## Main Tasks
+- [x] **COMPLETED** - Make header more transparent with glass effect (keep blur)
+- [x] **COMPLETED** - Remove ALL mock data from shop
+- [x] **COMPLETED** - Make modal window more compact and responsive for mobile
+- [x] **COMPLETED** - Keep desktop modal as is
+- [ ] **IN_PROGRESS** - Push changes to GitHub repository
 
-## 🔄 В работе
-- Все задачи выполнены ✅
+## Technical Steps
+- [ ] Analyze current project structure
+- [ ] Install dependencies and start dev server
+- [ ] Find and update header component for transparency/glass effect
+- [ ] Locate and remove mock shop data
+- [ ] Update ProductModal component for mobile responsiveness
+- [ ] Set up git remote with provided token
+- [ ] Commit and push changes
 
-## 📋 К выполнению
-- Нет задач
-
-## ✅ Выполнено
-- [x] Клонирование и запуск проекта
-- [x] Анализ существующей структуры
-- [x] Настройка Netlify Functions для Telegram Bot API
-- [x] Добавить анимацию загрузки для кнопки отправки заявки
-- [x] Настроить Firebase/Firestore интеграцию
-- [x] Создать модель данных для товаров
-- [x] Реализовать модальное окно товара
-- [x] Настроить Firebase Storage для изображений
-- [x] Добавить обработку ошибок отправки
-- [x] Создать инструкции по настройке
-- [x] Создание версии проекта
-- [x] Финальное тестирование и документация
-- [x] Создать Quick Start инструкцию
-
-## 📝 Модель данных товара
-```typescript
-interface Product {
-  id: string
-  name: string
-  category: string
-  price: {
-    min: number
-    max: number
-  }
-  description: string
-  colors: string[]
-  images: string[]
-  inStock: boolean
-  featured: boolean
-  createdAt: Date
-  updatedAt: Date
-}
-```
+## Git Setup
+- Repository: https://github.com/tuttoxa9/doors
+- Token: [REDACTED]
+- Branch: main

@@ -35,89 +35,7 @@ export default function ShopSection({ onContactClick }: ShopSectionProps) {
     return `от ${price.min.toLocaleString()} BYN`
   }
 
-  // Показываем статичные проекты если Firebase не настроен или нет товаров
-  const fallbackProjects = [
-    {
-      id: 'fallback-1',
-      name: 'Современный шкаф-купе',
-      category: 'Шкафы-купе',
-      images: ['https://images.unsplash.com/photo-1556228578-0d85b1a4d571?w=800&h=600&fit=crop'],
-      price: { min: 2125, max: 2125 },
-      description: 'Минималистичный дизайн с зеркальными дверцами',
-      colors: ['Белый', 'Венге'],
-      inStock: true,
-      featured: false,
-      createdAt: new Date(),
-      updatedAt: new Date()
-    },
-    {
-      id: 'fallback-2',
-      name: 'Встроенная гардеробная',
-      category: 'Гардеробные',
-      images: ['https://images.unsplash.com/photo-1565814329452-e1efa11c5b89?w=800&h=600&fit=crop'],
-      price: { min: 3000, max: 3000 },
-      description: 'Полноценная система хранения с освещением',
-      colors: ['Дуб сонома', 'Венге магия'],
-      inStock: true,
-      featured: true,
-      createdAt: new Date(),
-      updatedAt: new Date()
-    },
-    {
-      id: 'fallback-3',
-      name: 'Шкаф в прихожую',
-      category: 'Встроенные шкафы',
-      images: ['https://images.unsplash.com/photo-1586023492125-27b2c045efd7?w=800&h=600&fit=crop'],
-      price: { min: 1625, max: 1625 },
-      description: 'Компактное решение для небольших пространств',
-      colors: ['Белый', 'Серый шифер'],
-      inStock: true,
-      featured: false,
-      createdAt: new Date(),
-      updatedAt: new Date()
-    },
-    {
-      id: 'fallback-4',
-      name: 'Детский шкаф-домик',
-      category: 'Детские шкафы',
-      images: ['https://images.unsplash.com/photo-1558618047-3c8c76ca7d13?w=800&h=600&fit=crop'],
-      price: { min: 1125, max: 1125 },
-      description: 'Яркий и функциональный шкаф для детской комнаты',
-      colors: ['Белый', 'Свой цвет'],
-      inStock: true,
-      featured: false,
-      createdAt: new Date(),
-      updatedAt: new Date()
-    },
-    {
-      id: 'fallback-5',
-      name: 'Угловой шкаф-купе',
-      category: 'Шкафы-купе',
-      images: ['https://images.unsplash.com/photo-1586023492125-27b2c045efd7?w=800&h=600&fit=crop'],
-      price: { min: 2375, max: 2375 },
-      description: 'Максимальное использование углового пространства',
-      colors: ['Дуб сонома', 'Белый'],
-      inStock: true,
-      featured: false,
-      createdAt: new Date(),
-      updatedAt: new Date()
-    },
-    {
-      id: 'fallback-6',
-      name: 'Шкаф с подсветкой',
-      category: 'Встроенные шкафы',
-      images: ['https://images.unsplash.com/photo-1565814329452-e1efa11c5b89?w=800&h=600&fit=crop'],
-      price: { min: 2750, max: 2750 },
-      description: 'Элегантное решение с LED-подсветкой',
-      colors: ['Венге магия', 'Белый'],
-      inStock: true,
-      featured: false,
-      createdAt: new Date(),
-      updatedAt: new Date()
-    }
-  ] as Product[]
-
-  const displayProducts = products.length > 0 ? products : fallbackProjects
+  const displayProducts = products
 
   return (
     <div className="min-h-screen">
@@ -191,13 +109,14 @@ export default function ShopSection({ onContactClick }: ShopSectionProps) {
             </div>
           ) : error && products.length === 0 ? (
             <div className="text-center py-20">
-              <p className="text-zinc-600 mb-4">Не удалось загрузить товары из базы данных</p>
-              <p className="text-sm text-zinc-500">Показываем демонстрационные товары</p>
+              <p className="text-zinc-600 mb-4">Товары не найдены</p>
+              <p className="text-sm text-zinc-500">Пожалуйста, добавьте товары в Firebase Firestore</p>
             </div>
           ) : null}
 
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {displayProducts.map((product) => (
+          {displayProducts.length > 0 && (
+            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+              {displayProducts.map((product) => (
               <div
                 key={product.id}
                 className="bg-white rounded-2xl overflow-hidden shadow-lg hover:shadow-xl transition-shadow duration-300 group cursor-pointer"
@@ -258,8 +177,9 @@ export default function ShopSection({ onContactClick }: ShopSectionProps) {
                   </button>
                 </div>
               </div>
-            ))}
-          </div>
+              ))}
+            </div>
+          )}
         </div>
       </section>
 

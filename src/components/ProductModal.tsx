@@ -45,7 +45,7 @@ export default function ProductModal({ product, isOpen, onClose, onContactClick 
             animate={{ opacity: 1, scale: 1 }}
             exit={{ opacity: 0, scale: 0.9 }}
             transition={{ type: 'spring', damping: 25, stiffness: 300 }}
-            className="bg-white rounded-3xl max-w-6xl w-full max-h-[95vh] overflow-hidden shadow-2xl"
+            className="bg-white rounded-3xl max-w-6xl w-full max-h-[95vh] overflow-hidden shadow-2xl mx-2 md:mx-0"
             onClick={(e) => e.stopPropagation()}
           >
             <div className="flex flex-col lg:flex-row h-full max-h-[95vh]">
@@ -132,13 +132,13 @@ export default function ProductModal({ product, isOpen, onClose, onContactClick 
               {/* Правая часть - Информация о товаре */}
               <div className="lg:w-1/2 flex flex-col">
                 {/* Header */}
-                <div className="flex items-center justify-between p-6 border-b border-zinc-200">
-                  <div className="flex items-center space-x-3">
-                    <span className="px-3 py-1 bg-zinc-100 text-zinc-700 text-sm font-medium rounded-full">
+                <div className="flex items-center justify-between p-4 md:p-6 border-b border-zinc-200">
+                  <div className="flex items-center space-x-2 md:space-x-3">
+                    <span className="px-2 md:px-3 py-1 bg-zinc-100 text-zinc-700 text-xs md:text-sm font-medium rounded-full">
                       {product.category}
                     </span>
                     {product.featured && (
-                      <span className="px-3 py-1 bg-yellow-100 text-yellow-800 text-sm font-medium rounded-full">
+                      <span className="px-2 md:px-3 py-1 bg-yellow-100 text-yellow-800 text-xs md:text-sm font-medium rounded-full hidden md:inline">
                         ⭐ Популярное
                       </span>
                     )}
@@ -147,24 +147,24 @@ export default function ProductModal({ product, isOpen, onClose, onContactClick 
                     onClick={onClose}
                     className="p-2 hover:bg-zinc-100 rounded-full transition-colors duration-200"
                   >
-                    <X className="w-6 h-6 text-zinc-600" />
+                    <X className="w-5 h-5 md:w-6 md:h-6 text-zinc-600" />
                   </button>
                 </div>
 
                 {/* Content */}
-                <div className="flex-1 overflow-y-auto p-6 space-y-6">
+                <div className="flex-1 overflow-y-auto p-4 md:p-6 space-y-4 md:space-y-6">
                   {/* Название и цена */}
                   <div>
-                    <h2 className="text-3xl font-bold text-zinc-900 mb-3">{product.name}</h2>
-                    <div className="flex items-center justify-between">
-                      <p className="text-2xl font-bold text-zinc-900">
+                    <h2 className="text-xl md:text-3xl font-bold text-zinc-900 mb-2 md:mb-3">{product.name}</h2>
+                    <div className="flex flex-col md:flex-row md:items-center md:justify-between space-y-2 md:space-y-0">
+                      <p className="text-xl md:text-2xl font-bold text-zinc-900">
                         {formatPrice(product.price)}
                       </p>
                       <div className="flex items-center space-x-2">
-                        <button className="p-2 hover:bg-zinc-100 rounded-full transition-colors duration-200">
+                        <button className="p-2 hover:bg-zinc-100 rounded-full transition-colors duration-200 hidden md:block">
                           <Heart className="w-6 h-6 text-zinc-600" />
                         </button>
-                        <div className={`px-3 py-1 rounded-full text-sm font-medium ${
+                        <div className={`px-2 md:px-3 py-1 rounded-full text-xs md:text-sm font-medium ${
                           product.inStock
                             ? 'bg-green-100 text-green-800'
                             : 'bg-red-100 text-red-800'
@@ -177,20 +177,20 @@ export default function ProductModal({ product, isOpen, onClose, onContactClick 
 
                   {/* Описание */}
                   <div>
-                    <h3 className="text-lg font-semibold text-zinc-900 mb-3">Описание</h3>
-                    <p className="text-zinc-600 leading-relaxed">{product.description}</p>
+                    <h3 className="text-base md:text-lg font-semibold text-zinc-900 mb-2 md:mb-3">Описание</h3>
+                    <p className="text-sm md:text-base text-zinc-600 leading-relaxed">{product.description}</p>
                   </div>
 
                   {/* Цвета */}
                   {product.colors.length > 0 && (
                     <div>
-                      <h3 className="text-lg font-semibold text-zinc-900 mb-3">Доступные цвета</h3>
+                      <h3 className="text-base md:text-lg font-semibold text-zinc-900 mb-2 md:mb-3">Доступные цвета</h3>
                       <div className="flex flex-wrap gap-2">
                         {product.colors.map((color) => (
                           <button
                             key={color}
                             onClick={() => setSelectedColor(color)}
-                            className={`px-4 py-2 rounded-full border-2 transition-all duration-200 ${
+                            className={`px-3 md:px-4 py-1.5 md:py-2 rounded-full border-2 transition-all duration-200 text-sm md:text-base ${
                               selectedColor === color
                                 ? 'border-zinc-900 bg-zinc-900 text-white'
                                 : 'border-zinc-300 hover:border-zinc-500 text-zinc-700'
@@ -205,25 +205,25 @@ export default function ProductModal({ product, isOpen, onClose, onContactClick 
                 </div>
 
                 {/* Footer - Кнопки действий */}
-                <div className="p-6 border-t border-zinc-200 bg-zinc-50">
-                  <div className="flex space-x-4">
+                <div className="p-4 md:p-6 border-t border-zinc-200 bg-zinc-50">
+                  <div className="flex flex-col md:flex-row space-y-3 md:space-y-0 md:space-x-4">
                     <motion.button
                       onClick={onContactClick}
-                      className="flex-1 bg-zinc-900 text-white py-4 px-6 rounded-xl font-semibold hover:bg-zinc-800 transition-colors duration-200"
+                      className="flex-1 bg-zinc-900 text-white py-3 md:py-4 px-4 md:px-6 rounded-xl font-semibold hover:bg-zinc-800 transition-colors duration-200 text-sm md:text-base"
                       whileHover={{ scale: 1.02 }}
                       whileTap={{ scale: 0.98 }}
                     >
                       Заказать консультацию
                     </motion.button>
                     <motion.button
-                      className="px-6 py-4 border-2 border-zinc-300 text-zinc-700 rounded-xl font-semibold hover:border-zinc-500 transition-colors duration-200"
+                      className="md:flex-none px-4 md:px-6 py-3 md:py-4 border-2 border-zinc-300 text-zinc-700 rounded-xl font-semibold hover:border-zinc-500 transition-colors duration-200 text-sm md:text-base hidden md:block"
                       whileHover={{ scale: 1.02 }}
                       whileTap={{ scale: 0.98 }}
                     >
                       В избранное
                     </motion.button>
                   </div>
-                  <p className="text-sm text-zinc-500 text-center mt-4">
+                  <p className="text-xs md:text-sm text-zinc-500 text-center mt-3 md:mt-4">
                     Бесплатная консультация и 3D-визуализация
                   </p>
                 </div>
