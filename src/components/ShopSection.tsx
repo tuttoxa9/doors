@@ -17,29 +17,6 @@ export default function ShopSection({ onContactClick }: ShopSectionProps) {
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null)
   const [isModalOpen, setIsModalOpen] = useState(false)
 
-  const categories = [
-    {
-      name: 'Шкафы-купе',
-      count: products.filter(p => p.category === 'Шкафы-купе').length,
-      description: 'Классические раздвижные шкафы'
-    },
-    {
-      name: 'Встроенные шкафы',
-      count: products.filter(p => p.category === 'Встроенные шкафы').length,
-      description: 'Встроенные решения для ниш'
-    },
-    {
-      name: 'Гардеробные',
-      count: products.filter(p => p.category === 'Гардеробные').length,
-      description: 'Полноценные гардеробные системы'
-    },
-    {
-      name: 'Детские шкафы',
-      count: products.filter(p => p.category === 'Детские шкафы').length,
-      description: 'Безопасная мебель для детей'
-    }
-  ]
-
   const handleProductClick = (product: Product) => {
     setSelectedProduct(product)
     setIsModalOpen(true)
@@ -84,36 +61,6 @@ export default function ShopSection({ onContactClick }: ShopSectionProps) {
             >
               Каждый шкаф — это история успеха, воплощенная в дереве и стекле
             </p>
-          </div>
-        </div>
-      </section>
-
-      {/* Categories Section */}
-      <section className="pt-16 pb-20 bg-white">
-        <div className="container mx-auto px-6">
-          <h2
-            className="text-3xl font-bold text-zinc-900 mb-12 text-center"
-          >
-            Категории
-          </h2>
-          <div className="grid md:grid-cols-4 gap-6">
-            {categories.map((category) => (
-              <div
-                key={category.name}
-                className="bg-white p-6 rounded-2xl text-center hover:shadow-lg transition-all duration-200 cursor-pointer border border-zinc-100 group"
-              >
-                <div className="w-12 h-12 bg-zinc-100 group-hover:bg-zinc-900 rounded-xl flex items-center justify-center mx-auto mb-4 transition-colors duration-200">
-                  <svg className="w-6 h-6 text-zinc-600 group-hover:text-white transition-colors duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
-                  </svg>
-                </div>
-                <h3 className="text-lg font-semibold text-zinc-900 mb-2">{category.name}</h3>
-                <p className="text-sm text-zinc-500 mb-3">{category.description}</p>
-                <p className="text-zinc-600 font-medium">
-                  {category.count > 0 ? `${category.count} товаров` : 'Скоро в каталоге'}
-                </p>
-              </div>
-            ))}
           </div>
         </div>
       </section>
