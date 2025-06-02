@@ -66,10 +66,10 @@ export default function ShopSection({ onContactClick }: ShopSectionProps) {
       </section>
 
       {/* Projects Gallery */}
-      <section className="py-20 bg-zinc-50">
+      <section className="pt-8 pb-20 bg-zinc-50">
         <div className="container mx-auto px-6">
           <h2
-            className="text-3xl font-bold text-zinc-900 mb-16 text-center"
+            className="text-3xl font-bold text-zinc-900 mb-12 text-center"
           >
             Магазин
           </h2>
