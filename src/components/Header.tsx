@@ -1,7 +1,9 @@
 'use client'
 
-import { motion } from 'framer-motion'
+import { motion, AnimatePresence } from 'framer-motion'
+import { ShoppingBag } from 'lucide-react'
 import { cn } from '@/lib/utils'
+import { useCart } from '@/hooks/useCart'
 
 type ActiveSection = 'main' | 'shop'
 
@@ -14,6 +16,7 @@ interface HeaderProps {
 
 export default function Header({ scrollY, activeSection, setActiveSection, onContactClick }: HeaderProps) {
   const isScrolled = scrollY > 50
+  const { getTotalItems, setIsCartOpen } = useCart()
 
   return (
     <motion.header
@@ -71,27 +74,81 @@ export default function Header({ scrollY, activeSection, setActiveSection, onCon
             </button>
           </div>
 
-          {/* Desktop Contact Button */}
-          <motion.button
-            onClick={onContactClick}
-            className="hidden md:block bg-zinc-900 text-white px-6 py-2 rounded-full font-medium hover:bg-zinc-800 transition-colors duration-200"
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-          >
-            Связаться
-          </motion.button>
+          {/* Desktop Actions */}
+          <div className="hidden md:flex items-center space-x-4">
+            {/* Shopping Cart */}
+            <AnimatePresence>
+              {getTotalItems() > 0 && (
+                <motion.button
+                  initial={{ opacity: 0, scale: 0.8 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  exit={{ opacity: 0, scale: 0.8 }}
+                  onClick={() => setIsCartOpen(true)}
+                  className="relative bg-white text-zinc-900 p-3 rounded-full hover:bg-zinc-100 transition-colors duration-200 shadow-lg border border-zinc-200"
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                >
+                  <ShoppingBag className="w-5 h-5" />
+                  <motion.span
+                    initial={{ scale: 0 }}
+                    animate={{ scale: 1 }}
+                    className="absolute -top-2 -right-2 bg-red-500 text-white text-xs w-6 h-6 rounded-full flex items-center justify-center font-medium"
+                  >
+                    {getTotalItems()}
+                  </motion.span>
+                </motion.button>
+              )}
+            </AnimatePresence>
 
-          {/* Mobile Navigation Button */}
-          <button
-            className={
-              activeSection === 'main'
-                ? 'md:hidden bg-white text-zinc-900 px-4 py-2 rounded-full font-medium hover:bg-zinc-100 transition-colors duration-200'
-                : 'md:hidden bg-zinc-900 text-white px-4 py-2 rounded-full font-medium hover:bg-zinc-800 transition-colors duration-200'
-            }
-            onClick={() => setActiveSection(activeSection === 'main' ? 'shop' : 'main')}
-          >
-            {activeSection === 'main' ? 'Магазин' : 'Главная'}
-          </button>
+            {/* Contact Button */}
+            <motion.button
+              onClick={onContactClick}
+              className="bg-zinc-900 text-white px-6 py-2 rounded-full font-medium hover:bg-zinc-800 transition-colors duration-200"
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+            >
+              Связаться
+            </motion.button>
+          </div>
+
+          {/* Mobile Actions */}
+          <div className="md:hidden flex items-center space-x-3">
+            {/* Mobile Shopping Cart */}
+            <AnimatePresence>
+              {getTotalItems() > 0 && (
+                <motion.button
+                  initial={{ opacity: 0, scale: 0.8 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  exit={{ opacity: 0, scale: 0.8 }}
+                  onClick={() => setIsCartOpen(true)}
+                  className="relative bg-white text-zinc-900 p-2 rounded-full hover:bg-zinc-100 transition-colors duration-200 shadow-lg border border-zinc-200"
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                >
+                  <ShoppingBag className="w-4 h-4" />
+                  <motion.span
+                    initial={{ scale: 0 }}
+                    animate={{ scale: 1 }}
+                    className="absolute -top-1 -right-1 bg-red-500 text-white text-xs w-5 h-5 rounded-full flex items-center justify-center font-medium"
+                  >
+                    {getTotalItems()}
+                  </motion.span>
+                </motion.button>
+              )}
+            </AnimatePresence>
+
+            {/* Mobile Navigation Button */}
+            <button
+              className={
+                activeSection === 'main'
+                  ? 'bg-white text-zinc-900 px-4 py-2 rounded-full font-medium hover:bg-zinc-100 transition-colors duration-200'
+                  : 'bg-zinc-900 text-white px-4 py-2 rounded-full font-medium hover:bg-zinc-800 transition-colors duration-200'
+              }
+              onClick={() => setActiveSection(activeSection === 'main' ? 'shop' : 'main')}
+            >
+              {activeSection === 'main' ? 'Магазин' : 'Главная'}
+            </button>
+          </div>
         </nav>
       </div>
     </motion.header>

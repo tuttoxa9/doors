@@ -1,8 +1,9 @@
 'use client'
 
 import { motion, AnimatePresence } from 'framer-motion'
-import { X, ChevronLeft, ChevronRight, Heart, ShoppingCart } from 'lucide-react'
+import { X, ChevronLeft, ChevronRight, ShoppingCart, Plus } from 'lucide-react'
 import { useState } from 'react'
+import { useCart } from '@/hooks/useCart'
 import OptimizedImage from './OptimizedImage'
 import type { Product } from '@/types/product'
 
@@ -16,6 +17,8 @@ interface ProductModalProps {
 export default function ProductModal({ product, isOpen, onClose, onContactClick }: ProductModalProps) {
   const [currentImageIndex, setCurrentImageIndex] = useState(0)
   const [selectedColor, setSelectedColor] = useState<string>('')
+  const [isAddedToCart, setIsAddedToCart] = useState(false)
+  const { addToCart } = useCart()
 
   if (!product) return null
 
@@ -32,6 +35,18 @@ export default function ProductModal({ product, isOpen, onClose, onContactClick 
       return `${price.min.toLocaleString()} BYN`
     }
     return `от ${price.min.toLocaleString()} до ${price.max.toLocaleString()} BYN`
+  }
+
+  const handleAddToCart = () => {
+    if (!product) return
+
+    addToCart(product, selectedColor || undefined)
+    setIsAddedToCart(true)
+
+    // Reset the animation after a short delay
+    setTimeout(() => {
+      setIsAddedToCart(false)
+    }, 2000)
   }
 
   return (
@@ -165,9 +180,6 @@ export default function ProductModal({ product, isOpen, onClose, onContactClick 
                         {formatPrice(product.price)}
                       </p>
                       <div className="flex items-center space-x-2">
-                        <button className="p-2 hover:bg-zinc-100 rounded-full transition-colors duration-200 hidden md:block">
-                          <Heart className="w-6 h-6 text-zinc-600" />
-                        </button>
                         <div className={`px-2 md:px-3 py-1 rounded-full text-xs md:text-sm font-medium ${
                           product.inStock
                             ? 'bg-green-100 text-green-800'
@@ -220,11 +232,35 @@ export default function ProductModal({ product, isOpen, onClose, onContactClick 
                       Заказать консультацию
                     </motion.button>
                     <motion.button
-                      className="md:flex-none px-4 md:px-6 py-3 md:py-4 border-2 border-zinc-300 text-zinc-700 rounded-xl font-semibold hover:border-zinc-500 transition-colors duration-200 text-sm md:text-base hidden md:block"
-                      whileHover={{ scale: 1.02 }}
-                      whileTap={{ scale: 0.98 }}
+                      onClick={handleAddToCart}
+                      disabled={!product.inStock}
+                      className={`md:flex-none px-4 md:px-6 py-3 md:py-4 rounded-xl font-semibold transition-all duration-200 text-sm md:text-base flex items-center justify-center space-x-2 ${
+                        !product.inStock
+                          ? 'bg-zinc-200 text-zinc-400 cursor-not-allowed'
+                          : isAddedToCart
+                            ? 'bg-green-500 text-white'
+                            : 'border-2 border-zinc-300 text-zinc-700 hover:border-zinc-500 hover:bg-zinc-100'
+                      }`}
+                      whileHover={product.inStock ? { scale: 1.02 } : {}}
+                      whileTap={product.inStock ? { scale: 0.98 } : {}}
                     >
-                      В избранное
+                      {isAddedToCart ? (
+                        <>
+                          <motion.div
+                            initial={{ scale: 0 }}
+                            animate={{ scale: 1 }}
+                            className="w-4 h-4 rounded-full bg-white flex items-center justify-center"
+                          >
+                            <span className="text-green-500 font-bold text-xs">✓</span>
+                          </motion.div>
+                          <span>Добавлено!</span>
+                        </>
+                      ) : (
+                        <>
+                          <ShoppingCart className="w-4 h-4" />
+                          <span>В корзину</span>
+                        </>
+                      )}
                     </motion.button>
                   </div>
                   <p className="text-xs md:text-sm text-zinc-500 text-center mt-3 md:mt-4">
