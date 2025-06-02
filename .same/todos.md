@@ -5,7 +5,7 @@
 - [x] **COMPLETED** - Remove ALL mock data from shop
 - [x] **COMPLETED** - Make modal window more compact and responsive for mobile
 - [x] **COMPLETED** - Keep desktop modal as is
-- [ ] **IN_PROGRESS** - Push changes to GitHub repository
+- [x] **COMPLETED** - Push changes to GitHub repository
 
 ## Technical Steps
 - [ ] Analyze current project structure

@@ -24,7 +24,7 @@ export default function Header({ scrollY, activeSection, setActiveSection, onCon
         "fixed top-0 left-0 right-0 z-50 transition-all duration-500 ease-in-out",
         isScrolled
           ? "glass-effect rounded-b-2xl rounded-t-2xl mx-6 mt-4 shadow-xl"
-          : "bg-white/20 backdrop-blur-xl border border-white/20"
+          : "bg-white/50 backdrop-blur-xl border border-white/30"
       )}
       animate={{
         y: isScrolled ? 0 : 0,
@@ -100,7 +100,7 @@ export default function Header({ scrollY, activeSection, setActiveSection, onCon
         {/* Mobile Menu */}
         {isMobileMenuOpen && (
           <div
-            className="md:hidden border-t border-white/30 bg-white/20 backdrop-blur-xl"
+            className="md:hidden border-t border-white/30 bg-white/50 backdrop-blur-xl"
           >
             <div className="px-6 py-4 space-y-4">
               <button
