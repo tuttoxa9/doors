@@ -12,6 +12,7 @@ type ActiveSection = 'main' | 'shop'
 export default function Home() {
   const [activeSection, setActiveSection] = useState<ActiveSection>('main')
   const [scrollY, setScrollY] = useState(0)
+  const [showContactForm, setShowContactForm] = useState(false)
 
   useEffect(() => {
     const handleScroll = () => setScrollY(window.scrollY)
@@ -46,6 +47,7 @@ export default function Home() {
         scrollY={scrollY}
         activeSection={activeSection}
         setActiveSection={setActiveSection}
+        onContactClick={() => setShowContactForm(true)}
       />
 
       <main className="relative overflow-hidden">
@@ -59,7 +61,10 @@ export default function Home() {
               exit="exit"
               transition={transition}
             >
-              <MainSection />
+              <MainSection
+                showContactForm={showContactForm}
+                setShowContactForm={setShowContactForm}
+              />
             </motion.div>
           ) : (
             <motion.div
@@ -70,7 +75,7 @@ export default function Home() {
               exit="exit"
               transition={transition}
             >
-              <ShopSection />
+              <ShopSection onContactClick={() => setShowContactForm(true)} />
             </motion.div>
           )}
         </AnimatePresence>

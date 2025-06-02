@@ -2,14 +2,18 @@
 
 import { motion } from 'framer-motion'
 import { useState } from 'react'
-import { Star, ArrowRight, Phone, Mail, MapPin } from 'lucide-react'
+import { Star, ArrowRight, Phone, Mail, MapPin, Check } from 'lucide-react'
 import VideoBackground from './VideoBackground'
 
-export default function MainSection() {
+interface MainSectionProps {
+  showContactForm?: boolean
+  setShowContactForm?: (show: boolean) => void
+}
+
+export default function MainSection({ showContactForm = false, setShowContactForm }: MainSectionProps) {
   const [formData, setFormData] = useState({
     name: '',
-    phone: '',
-    email: '',
+    phone: '+375',
     comment: ''
   })
 
@@ -17,14 +21,32 @@ export default function MainSection() {
     e.preventDefault()
     // Handle form submission logic here
     console.log('Form submitted:', formData)
+    setShowContactForm?.(false)
   }
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    setFormData({
-      ...formData,
-      [e.target.name]: e.target.value
-    })
+    const { name, value } = e.target
+
+    if (name === 'phone') {
+      // Ensure phone starts with +375 and only allow 9 digits after
+      if (value.startsWith('+375')) {
+        const digits = value.slice(4).replace(/\D/g, '')
+        if (digits.length <= 9) {
+          setFormData({
+            ...formData,
+            phone: `+375${digits}`
+          })
+        }
+      }
+    } else {
+      setFormData({
+        ...formData,
+        [name]: value
+      })
+    }
   }
+
+  const isPhoneValid = formData.phone.length === 13 // +375 + 9 digits
 
   return (
     <div>
@@ -68,6 +90,7 @@ export default function MainSection() {
           {/* Кнопка по центру */}
           <div className="flex justify-center">
             <motion.button
+              onClick={() => setShowContactForm?.(true)}
               className="bg-zinc-900 text-white px-6 sm:px-8 py-3 sm:py-4 rounded-full text-base sm:text-lg font-medium hover:bg-zinc-800 transition-colors duration-200 inline-flex items-center space-x-2"
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
@@ -153,31 +176,22 @@ export default function MainSection() {
                   <label htmlFor="phone" className="block text-sm font-medium text-zinc-700 mb-2 font-durik">
                     Телефон
                   </label>
-                  <input
-                    type="tel"
-                    id="phone"
-                    name="phone"
-                    value={formData.phone}
-                    onChange={handleInputChange}
-                    className="w-full px-4 py-3 border border-zinc-300 rounded-lg focus:ring-2 focus:ring-zinc-900 focus:border-transparent outline-none transition-all duration-200"
-                    placeholder="+7 (999) 999-99-99"
-                    required
-                  />
-                </div>
-                <div>
-                  <label htmlFor="email" className="block text-sm font-medium text-zinc-700 mb-2 font-durik">
-                    Email
-                  </label>
-                  <input
-                    type="email"
-                    id="email"
-                    name="email"
-                    value={formData.email}
-                    onChange={handleInputChange}
-                    className="w-full px-4 py-3 border border-zinc-300 rounded-lg focus:ring-2 focus:ring-zinc-900 focus:border-transparent outline-none transition-all duration-200"
-                    placeholder="your@email.com"
-                    required
-                  />
+                  <div className="relative">
+                    <input
+                      type="tel"
+                      id="phone"
+                      name="phone"
+                      value={formData.phone}
+                      onChange={handleInputChange}
+                      className="w-full px-4 py-3 pr-12 border border-zinc-300 rounded-lg focus:ring-2 focus:ring-zinc-900 focus:border-transparent outline-none transition-all duration-200"
+                      required
+                    />
+                    {isPhoneValid && (
+                      <div className="absolute right-4 top-1/2 transform -translate-y-1/2">
+                        <Check className="w-5 h-5 text-green-600" />
+                      </div>
+                    )}
+                  </div>
                 </div>
                 <div>
                   <label htmlFor="comment" className="block text-sm font-medium text-zinc-700 mb-2 font-durik">
@@ -283,6 +297,88 @@ export default function MainSection() {
           </div>
         </div>
       </section>
+
+      {/* Contact Modal */}
+      {showContactForm && (
+        <div className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+          <motion.div
+            initial={{ opacity: 0, scale: 0.95 }}
+            animate={{ opacity: 1, scale: 1 }}
+            exit={{ opacity: 0, scale: 0.95 }}
+            className="bg-white rounded-2xl p-8 max-w-md w-full max-h-[90vh] overflow-y-auto"
+          >
+            <div className="flex justify-between items-center mb-6">
+              <h3 className="text-2xl font-bold text-zinc-900 font-durik">Заказать консультацию</h3>
+              <button
+                onClick={() => setShowContactForm?.(false)}
+                className="text-zinc-500 hover:text-zinc-900 transition-colors"
+              >
+                ×
+              </button>
+            </div>
+            <form onSubmit={handleSubmit} className="space-y-6">
+              <div>
+                <label htmlFor="modal-name" className="block text-sm font-medium text-zinc-700 mb-2 font-durik">
+                  Имя
+                </label>
+                <input
+                  type="text"
+                  id="modal-name"
+                  name="name"
+                  value={formData.name}
+                  onChange={handleInputChange}
+                  className="w-full px-4 py-3 border border-zinc-300 rounded-lg focus:ring-2 focus:ring-zinc-900 focus:border-transparent outline-none transition-all duration-200"
+                  placeholder="Ваше имя"
+                  required
+                />
+              </div>
+              <div>
+                <label htmlFor="modal-phone" className="block text-sm font-medium text-zinc-700 mb-2 font-durik">
+                  Телефон
+                </label>
+                <div className="relative">
+                  <input
+                    type="tel"
+                    id="modal-phone"
+                    name="phone"
+                    value={formData.phone}
+                    onChange={handleInputChange}
+                    className="w-full px-4 py-3 pr-12 border border-zinc-300 rounded-lg focus:ring-2 focus:ring-zinc-900 focus:border-transparent outline-none transition-all duration-200"
+                    required
+                  />
+                  {isPhoneValid && (
+                    <div className="absolute right-4 top-1/2 transform -translate-y-1/2">
+                      <Check className="w-5 h-5 text-green-600" />
+                    </div>
+                  )}
+                </div>
+              </div>
+              <div>
+                <label htmlFor="modal-comment" className="block text-sm font-medium text-zinc-700 mb-2 font-durik">
+                  Комментарий
+                </label>
+                <textarea
+                  id="modal-comment"
+                  name="comment"
+                  value={formData.comment}
+                  onChange={handleInputChange}
+                  rows={4}
+                  className="w-full px-4 py-3 border border-zinc-300 rounded-lg focus:ring-2 focus:ring-zinc-900 focus:border-transparent outline-none transition-all duration-200"
+                  placeholder="Расскажите о ваших пожеланиях..."
+                />
+              </div>
+              <motion.button
+                type="submit"
+                className="w-full bg-zinc-900 text-white py-3 rounded-lg font-medium hover:bg-zinc-800 transition-colors duration-200 font-durik"
+                whileHover={{ scale: 1.02 }}
+                whileTap={{ scale: 0.98 }}
+              >
+                Отправить заявку
+              </motion.button>
+            </form>
+          </motion.div>
+        </div>
+      )}
     </div>
   )
 }

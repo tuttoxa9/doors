@@ -3,7 +3,11 @@
 import { motion } from 'framer-motion'
 import { ArrowRight, Eye } from 'lucide-react'
 
-export default function ShopSection() {
+interface ShopSectionProps {
+  onContactClick?: () => void
+}
+
+export default function ShopSection({ onContactClick }: ShopSectionProps) {
   const categories = [
     { name: 'Шкафы-купе', count: 24 },
     { name: 'Встроенные шкафы', count: 18 },
@@ -63,33 +67,36 @@ export default function ShopSection() {
   ]
 
   return (
-    <div className="pt-24 min-h-screen">
-      {/* Hero Section */}
-      <section className="bg-gradient-to-br from-zinc-50 to-white py-20">
-        <div className="container mx-auto px-6 text-center">
-          <h1
-            className="text-3xl sm:text-5xl md:text-7xl font-bold text-zinc-900 mb-6 tracking-tight"
-          >
-            Наши проекты
-          </h1>
-          <p
-            className="text-xl text-zinc-600 mb-12 max-w-3xl mx-auto"
-          >
-            Каждый шкаф — это история успеха, воплощенная в дереве и стекле
-          </p>
-        </div>
-      </section>
-
-      {/* Showroom Image Section */}
-      <section className="relative">
-        <div className="w-full h-[60vh] relative overflow-hidden">
+    <div className="min-h-screen">
+      {/* Hero Section with Background Image */}
+      <section className="relative py-20 min-h-[80vh] flex items-center justify-center overflow-hidden">
+        {/* Background Image */}
+        <div className="absolute inset-0 z-0">
           <img
             src="/showroom.webp"
             alt="Showroom MAESTRO"
             className="w-full h-full object-cover"
           />
+          {/* Dark overlay for better text readability */}
+          <div className="absolute inset-0 bg-black/30" />
           {/* Gradient overlay for smooth transition to white */}
-          <div className="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-white via-white/80 to-transparent" />
+          <div className="absolute bottom-0 left-0 right-0 h-48 bg-gradient-to-t from-white via-white/95 via-white/80 via-white/60 via-white/30 to-transparent" />
+        </div>
+
+        {/* Content */}
+        <div className="container mx-auto px-6 text-center relative z-10">
+          <div className="inline-block backdrop-blur-sm bg-white/20 rounded-2xl px-6 py-4 md:px-8 md:py-6 border border-white/30 shadow-2xl">
+            <h1
+              className="text-3xl sm:text-5xl md:text-7xl font-bold text-white mb-3 tracking-tight drop-shadow-lg"
+            >
+              Наши проекты
+            </h1>
+            <p
+              className="text-xl text-white/90 drop-shadow-md"
+            >
+              Каждый шкаф — это история успеха, воплощенная в дереве и стекле
+            </p>
+          </div>
         </div>
       </section>
 
@@ -219,6 +226,7 @@ export default function ShopSection() {
             Свяжитесь с нами для бесплатной консультации и 3D-визуализации вашего будущего шкафа
           </p>
           <motion.button
+            onClick={onContactClick}
             className="bg-white text-zinc-900 px-8 py-4 rounded-full text-lg font-medium hover:bg-zinc-100 transition-colors duration-200 inline-flex items-center space-x-2"
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}

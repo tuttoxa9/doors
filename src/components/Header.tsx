@@ -11,9 +11,10 @@ interface HeaderProps {
   scrollY: number
   activeSection: ActiveSection
   setActiveSection: (section: ActiveSection) => void
+  onContactClick?: () => void
 }
 
-export default function Header({ scrollY, activeSection, setActiveSection }: HeaderProps) {
+export default function Header({ scrollY, activeSection, setActiveSection, onContactClick }: HeaderProps) {
   const isScrolled = scrollY > 50
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
 
@@ -75,6 +76,7 @@ export default function Header({ scrollY, activeSection, setActiveSection }: Hea
 
           {/* Desktop Contact Button */}
           <motion.button
+            onClick={onContactClick}
             className="hidden md:block bg-zinc-900 text-white px-6 py-2 rounded-full font-medium hover:bg-zinc-800 transition-colors duration-200"
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
@@ -131,7 +133,10 @@ export default function Header({ scrollY, activeSection, setActiveSection }: Hea
               </button>
               <button
                 className="w-full bg-zinc-900 text-white px-6 py-3 rounded-full font-medium"
-                onClick={() => setIsMobileMenuOpen(false)}
+                onClick={() => {
+                  setIsMobileMenuOpen(false)
+                  onContactClick?.()
+                }}
               >
                 Связаться
               </button>
