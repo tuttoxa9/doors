@@ -1,7 +1,6 @@
 'use client'
 
 import { useState } from 'react'
-import { getImagePlaceholder } from '@/lib/imageUtils'
 
 interface OptimizedImageProps {
   src: string

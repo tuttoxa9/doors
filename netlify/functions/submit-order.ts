@@ -120,15 +120,8 @@ ${orderData.comment ? `💬 Комментарий: ${orderData.comment}` : ''}
       throw new Error('Failed to send message to Telegram')
     }
 
-    // Сохраняем в Firestore (если есть Firebase функция)
-    try {
-      // TODO: Add Firestore integration here
-      // This will be handled when Firebase is properly configured
-      console.log('Order data to save to Firestore:', orderData)
-    } catch (firestoreError) {
-      console.error('Firestore error:', firestoreError)
-      // Не останавливаем выполнение, если Firestore недоступен
-    }
+    // Firestore функциональность удалена для оптимизации
+    console.log('Order processed successfully for Telegram:', orderData.phone)
 
     return {
       statusCode: 200,

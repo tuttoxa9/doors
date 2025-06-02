@@ -1,9 +1,8 @@
 'use client'
 
 import { motion } from 'framer-motion'
-import { ArrowRight, Eye, Loader2 } from 'lucide-react'
+import { ArrowRight, Eye } from 'lucide-react'
 import { useState } from 'react'
-import { useProducts } from '@/hooks/useProducts'
 import ProductModal from './ProductModal'
 import OptimizedImage from './OptimizedImage'
 import type { Product } from '@/types/product'
@@ -12,8 +11,50 @@ interface ShopSectionProps {
   onContactClick?: () => void
 }
 
+// Статические данные для демонстрации
+const staticProducts: Product[] = [
+  {
+    id: '1',
+    name: 'Шкаф-купе MAESTRO Premium',
+    category: 'Шкафы-купе',
+    price: { min: 2500, max: 4000 },
+    description: 'Современный шкаф-купе с зеркальными фасадами и алюминиевой системой. Идеальное решение для спальни.',
+    colors: ['Белый', 'Венге', 'Дуб молочный'],
+    images: ['/showroom.webp'],
+    inStock: true,
+    featured: true,
+    createdAt: new Date(),
+    updatedAt: new Date()
+  },
+  {
+    id: '2',
+    name: 'Встроенный шкаф MAESTRO',
+    category: 'Встроенные шкафы',
+    price: { min: 3000, max: 5500 },
+    description: 'Встроенный шкаф с максимальным использованием пространства. Индивидуальное проектирование.',
+    colors: ['Графит', 'Белый', 'Дуб сонома'],
+    images: ['/showroom.webp'],
+    inStock: true,
+    featured: true,
+    createdAt: new Date(),
+    updatedAt: new Date()
+  },
+  {
+    id: '3',
+    name: 'Гардеробная MAESTRO',
+    category: 'Гардеробные',
+    price: { min: 4000, max: 7000 },
+    description: 'Просторная гардеробная система с удобной организацией пространства.',
+    colors: ['Белый', 'Венге', 'Дуб'],
+    images: ['/showroom.webp'],
+    inStock: true,
+    featured: false,
+    createdAt: new Date(),
+    updatedAt: new Date()
+  }
+]
+
 export default function ShopSection({ onContactClick }: ShopSectionProps) {
-  const { products, loading, error } = useProducts()
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null)
   const [isModalOpen, setIsModalOpen] = useState(false)
 
@@ -29,7 +70,7 @@ export default function ShopSection({ onContactClick }: ShopSectionProps) {
     return `от ${price.min.toLocaleString()} BYN`
   }
 
-  const displayProducts = products
+  const displayProducts = staticProducts
 
   return (
     <div className="min-h-screen">
@@ -74,12 +115,7 @@ export default function ShopSection({ onContactClick }: ShopSectionProps) {
             Магазин
           </h2>
 
-          {loading ? (
-            <div className="flex justify-center items-center py-20">
-              <Loader2 className="w-8 h-8 animate-spin text-zinc-600" />
-              <span className="ml-3 text-zinc-600">Загрузка товаров...</span>
-            </div>
-          ) : products.length === 0 ? (
+          {displayProducts.length === 0 ? (
             <div className="text-center py-20 bg-zinc-50 rounded-2xl">
               <div className="max-w-md mx-auto">
                 <div className="w-16 h-16 bg-zinc-200 rounded-full flex items-center justify-center mx-auto mb-6">
@@ -98,101 +134,81 @@ export default function ShopSection({ onContactClick }: ShopSectionProps) {
                 </button>
               </div>
             </div>
-          ) : error ? (
-            <div className="text-center py-20 bg-red-50 rounded-2xl">
-              <div className="max-w-md mx-auto">
-                <div className="w-16 h-16 bg-red-200 rounded-full flex items-center justify-center mx-auto mb-6">
-                  <svg className="w-8 h-8 text-red-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                  </svg>
-                </div>
-                <h3 className="text-xl font-semibold text-red-900 mb-3">Ошибка загрузки</h3>
-                <p className="text-red-600 mb-6">{error}</p>
-                <button
-                  onClick={() => window.location.reload()}
-                  className="bg-red-600 text-white px-6 py-3 rounded-full font-medium hover:bg-red-700 transition-colors duration-200"
-                >
-                  Обновить страницу
-                </button>
-              </div>
-            </div>
-          ) : null}
-
-          {displayProducts.length > 0 && (
+          ) : (
             <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
               {displayProducts.map((product) => (
-              <div
-                key={product.id}
-                className="bg-white rounded-2xl overflow-hidden shadow-lg hover:shadow-xl transition-shadow duration-300 group cursor-pointer"
-                onClick={() => handleProductClick(product)}
-              >
-                <div className="relative overflow-hidden">
-                  {product.images && product.images.length > 0 ? (
-                    <OptimizedImage
-                      src={product.images[0]}
-                      alt={product.name}
-                      className="w-full h-64 object-cover group-hover:scale-105 transition-transform duration-300"
-                      fallbackClassName="w-full h-64 group-hover:bg-zinc-200 transition-colors duration-300"
-                    />
-                  ) : (
-                    <div className="w-full h-64 bg-zinc-100 flex items-center justify-center group-hover:bg-zinc-200 transition-colors duration-300">
-                      <div className="text-center text-zinc-400">
-                        <svg className="w-16 h-16 mx-auto mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
-                        </svg>
-                        <p className="text-sm">Изображение<br />не загружено</p>
+                <div
+                  key={product.id}
+                  className="bg-white rounded-2xl overflow-hidden shadow-lg hover:shadow-xl transition-shadow duration-300 group cursor-pointer"
+                  onClick={() => handleProductClick(product)}
+                >
+                  <div className="relative overflow-hidden">
+                    {product.images && product.images.length > 0 ? (
+                      <OptimizedImage
+                        src={product.images[0]}
+                        alt={product.name}
+                        className="w-full h-64 object-cover group-hover:scale-105 transition-transform duration-300"
+                        fallbackClassName="w-full h-64 group-hover:bg-zinc-200 transition-colors duration-300"
+                      />
+                    ) : (
+                      <div className="w-full h-64 bg-zinc-100 flex items-center justify-center group-hover:bg-zinc-200 transition-colors duration-300">
+                        <div className="text-center text-zinc-400">
+                          <svg className="w-16 h-16 mx-auto mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                          </svg>
+                          <p className="text-sm">Изображение<br />не загружено</p>
+                        </div>
+                      </div>
+                    )}
+                    <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors duration-300 flex items-center justify-center opacity-0 group-hover:opacity-100">
+                      <div className="flex space-x-3">
+                        <button className="bg-white/90 p-3 rounded-full hover:bg-white transition-colors duration-200">
+                          <Eye className="w-5 h-5 text-zinc-900" />
+                        </button>
                       </div>
                     </div>
-                  )}
-                  <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors duration-300 flex items-center justify-center opacity-0 group-hover:opacity-100">
-                    <div className="flex space-x-3">
-                      <button className="bg-white/90 p-3 rounded-full hover:bg-white transition-colors duration-200">
-                        <Eye className="w-5 h-5 text-zinc-900" />
-                      </button>
-                    </div>
-                  </div>
-                  {product.featured && (
-                    <div className="absolute top-4 left-4">
-                      <span className="bg-yellow-400 text-yellow-900 px-3 py-1 rounded-full text-sm font-medium">
-                        ⭐ Популярное
-                      </span>
-                    </div>
-                  )}
-                  {!product.inStock && (
-                    <div className="absolute top-4 right-4">
-                      <span className="bg-red-500 text-white px-3 py-1 rounded-full text-sm font-medium">
-                        Нет в наличии
-                      </span>
-                    </div>
-                  )}
-                </div>
-                <div className="p-6">
-                  <div className="flex items-center justify-between mb-2">
-                    <span className="text-sm text-zinc-500 font-medium">{product.category}</span>
-                    <span className="text-lg font-bold text-zinc-900">{formatPrice(product.price)}</span>
-                  </div>
-                  <h3 className="text-xl font-semibold text-zinc-900 mb-2">{product.name}</h3>
-                  <p className="text-zinc-600 mb-4">{product.description}</p>
-
-                  {product.colors.length > 0 && (
-                    <div className="flex flex-wrap gap-1 mb-4">
-                      {product.colors.slice(0, 3).map((color) => (
-                        <span key={color} className="text-xs bg-zinc-100 text-zinc-700 px-2 py-1 rounded">
-                          {color}
+                    {product.featured && (
+                      <div className="absolute top-4 left-4">
+                        <span className="bg-yellow-400 text-yellow-900 px-3 py-1 rounded-full text-sm font-medium">
+                          ⭐ Популярное
                         </span>
-                      ))}
-                      {product.colors.length > 3 && (
-                        <span className="text-xs text-zinc-500">+{product.colors.length - 3}</span>
-                      )}
+                      </div>
+                    )}
+                    {!product.inStock && (
+                      <div className="absolute top-4 right-4">
+                        <span className="bg-red-500 text-white px-3 py-1 rounded-full text-sm font-medium">
+                          Нет в наличии
+                        </span>
+                      </div>
+                    )}
+                  </div>
+                  <div className="p-6">
+                    <div className="flex items-center justify-between mb-2">
+                      <span className="text-sm text-zinc-500 font-medium">{product.category}</span>
+                      <span className="text-lg font-bold text-zinc-900">{formatPrice(product.price)}</span>
                     </div>
-                  )}
+                    <h3 className="text-xl font-semibold text-zinc-900 mb-2">{product.name}</h3>
+                    <p className="text-zinc-600 mb-4">{product.description}</p>
 
-                  <button className="flex items-center space-x-2 text-zinc-900 font-medium hover:text-zinc-700 transition-colors duration-200">
-                    <span>Подробнее</span>
-                    <ArrowRight className="w-4 h-4" />
-                  </button>
+                    {product.colors.length > 0 && (
+                      <div className="flex flex-wrap gap-1 mb-4">
+                        {product.colors.slice(0, 3).map((color) => (
+                          <span key={color} className="text-xs bg-zinc-100 text-zinc-700 px-2 py-1 rounded">
+                            {color}
+                          </span>
+                        ))}
+                        {product.colors.length > 3 && (
+                          <span className="text-xs text-zinc-500">+{product.colors.length - 3}</span>
+                        )}
+                      </div>
+                    )}
+
+                    <button className="flex items-center space-x-2 text-zinc-900 font-medium hover:text-zinc-700 transition-colors duration-200">
+                      <span>Подробнее</span>
+                      <ArrowRight className="w-4 h-4" />
+                    </button>
+                  </div>
                 </div>
-              </div>
               ))}
             </div>
           )}

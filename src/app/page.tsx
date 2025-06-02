@@ -1,13 +1,15 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, lazy, Suspense } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import Header from '@/components/Header'
-import MainSection from '@/components/MainSection'
-import ShopSection from '@/components/ShopSection'
-import Footer from '@/components/Footer'
-import ContactModal from '@/components/ContactModal'
-import ShoppingCart from '@/components/ShoppingCart'
+
+// Lazy load компонентов для оптимизации
+const MainSection = lazy(() => import('@/components/MainSection'))
+const ShopSection = lazy(() => import('@/components/ShopSection'))
+const Footer = lazy(() => import('@/components/Footer'))
+const ContactModal = lazy(() => import('@/components/ContactModal'))
+const ShoppingCart = lazy(() => import('@/components/ShoppingCart'))
 
 type ActiveSection = 'main' | 'shop'
 
@@ -107,10 +109,12 @@ export default function Home() {
               exit="exit"
               transition={transition}
             >
-              <MainSection
-                showContactForm={showContactForm}
-                setShowContactForm={setShowContactForm}
-              />
+              <Suspense fallback={<div>Загрузка...</div>}>
+                <MainSection
+                  showContactForm={showContactForm}
+                  setShowContactForm={setShowContactForm}
+                />
+              </Suspense>
             </motion.div>
           ) : (
             <motion.div
@@ -121,22 +125,30 @@ export default function Home() {
               exit="exit"
               transition={transition}
             >
-              <ShopSection onContactClick={() => setShowContactForm(true)} />
+              <Suspense fallback={<div>Загрузка...</div>}>
+                <ShopSection onContactClick={() => setShowContactForm(true)} />
+              </Suspense>
             </motion.div>
           )}
         </AnimatePresence>
       </main>
 
-      <Footer />
+      <Suspense fallback={<div>Загрузка...</div>}>
+        <Footer />
+      </Suspense>
 
       {/* Global Contact Modal */}
-      <ContactModal
-        isOpen={showContactForm}
-        onClose={() => setShowContactForm(false)}
-      />
+      <Suspense fallback={null}>
+        <ContactModal
+          isOpen={showContactForm}
+          onClose={() => setShowContactForm(false)}
+        />
+      </Suspense>
 
       {/* Shopping Cart */}
-      <ShoppingCart onOrderSubmit={handleOrderSubmit} />
+      <Suspense fallback={null}>
+        <ShoppingCart onOrderSubmit={handleOrderSubmit} />
+      </Suspense>
     </div>
   )
 }

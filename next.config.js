@@ -1,5 +1,19 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  // Оптимизация бандла
+  experimental: {
+    optimizeCss: true,
+    turbotrace: {
+      logLevel: 'error'
+    }
+  },
+
+  // Сжатие
+  compress: true,
+
+  // Минификация
+  swcMinify: true,
+
   images: {
     unoptimized: true,
     domains: [
@@ -30,6 +44,27 @@ const nextConfig = {
         pathname: "/**",
       },
     ],
+  },
+
+  // Оптимизация для продакшена
+  poweredByHeader: false,
+
+  // Webpack оптимизации
+  webpack: (config, { dev }) => {
+    if (!dev) {
+      // Оптимизация для продакшена
+      config.optimization.splitChunks = {
+        chunks: 'all',
+        cacheGroups: {
+          vendor: {
+            test: /[\\/]node_modules[\\/]/,
+            name: 'vendors',
+            chunks: 'all',
+          },
+        },
+      };
+    }
+    return config;
   },
 };
 
