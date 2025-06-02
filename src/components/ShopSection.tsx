@@ -17,10 +17,26 @@ export default function ShopSection({ onContactClick }: ShopSectionProps) {
   const [isModalOpen, setIsModalOpen] = useState(false)
 
   const categories = [
-    { name: 'Шкафы-купе', count: products.filter(p => p.category === 'Шкафы-купе').length },
-    { name: 'Встроенные шкафы', count: products.filter(p => p.category === 'Встроенные шкафы').length },
-    { name: 'Гардеробные', count: products.filter(p => p.category === 'Гардеробные').length },
-    { name: 'Детские шкафы', count: products.filter(p => p.category === 'Детские шкафы').length }
+    {
+      name: 'Шкафы-купе',
+      count: products.filter(p => p.category === 'Шкафы-купе').length,
+      description: 'Классические раздвижные шкафы'
+    },
+    {
+      name: 'Встроенные шкафы',
+      count: products.filter(p => p.category === 'Встроенные шкафы').length,
+      description: 'Встроенные решения для ниш'
+    },
+    {
+      name: 'Гардеробные',
+      count: products.filter(p => p.category === 'Гардеробные').length,
+      description: 'Полноценные гардеробные системы'
+    },
+    {
+      name: 'Детские шкафы',
+      count: products.filter(p => p.category === 'Детские шкафы').length,
+      description: 'Безопасная мебель для детей'
+    }
   ]
 
   const handleProductClick = (product: Product) => {
@@ -83,10 +99,18 @@ export default function ShopSection({ onContactClick }: ShopSectionProps) {
             {categories.map((category) => (
               <div
                 key={category.name}
-                className="bg-zinc-50 p-6 rounded-2xl text-center hover:bg-zinc-100 transition-colors duration-200 cursor-pointer"
+                className="bg-white p-6 rounded-2xl text-center hover:shadow-lg transition-all duration-200 cursor-pointer border border-zinc-100 group"
               >
+                <div className="w-12 h-12 bg-zinc-100 group-hover:bg-zinc-900 rounded-xl flex items-center justify-center mx-auto mb-4 transition-colors duration-200">
+                  <svg className="w-6 h-6 text-zinc-600 group-hover:text-white transition-colors duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
+                  </svg>
+                </div>
                 <h3 className="text-lg font-semibold text-zinc-900 mb-2">{category.name}</h3>
-                <p className="text-zinc-600">{category.count} проектов</p>
+                <p className="text-sm text-zinc-500 mb-3">{category.description}</p>
+                <p className="text-zinc-600 font-medium">
+                  {category.count > 0 ? `${category.count} товаров` : 'Скоро в каталоге'}
+                </p>
               </div>
             ))}
           </div>
@@ -107,10 +131,42 @@ export default function ShopSection({ onContactClick }: ShopSectionProps) {
               <Loader2 className="w-8 h-8 animate-spin text-zinc-600" />
               <span className="ml-3 text-zinc-600">Загрузка товаров...</span>
             </div>
-          ) : error && products.length === 0 ? (
-            <div className="text-center py-20">
-              <p className="text-zinc-600 mb-4">Товары не найдены</p>
-              <p className="text-sm text-zinc-500">Пожалуйста, добавьте товары в Firebase Firestore</p>
+          ) : products.length === 0 ? (
+            <div className="text-center py-20 bg-zinc-50 rounded-2xl">
+              <div className="max-w-md mx-auto">
+                <div className="w-16 h-16 bg-zinc-200 rounded-full flex items-center justify-center mx-auto mb-6">
+                  <svg className="w-8 h-8 text-zinc-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" />
+                  </svg>
+                </div>
+                <h3 className="text-xl font-semibold text-zinc-900 mb-3">Каталог товаров пуст</h3>
+                <p className="text-zinc-600 mb-2">В данный момент наш каталог пополняется новыми товарами.</p>
+                <p className="text-sm text-zinc-500 mb-6">Для добавления товаров используйте админ-панель</p>
+                <button
+                  onClick={onContactClick}
+                  className="bg-zinc-900 text-white px-6 py-3 rounded-full font-medium hover:bg-zinc-800 transition-colors duration-200"
+                >
+                  Связаться с нами
+                </button>
+              </div>
+            </div>
+          ) : error ? (
+            <div className="text-center py-20 bg-red-50 rounded-2xl">
+              <div className="max-w-md mx-auto">
+                <div className="w-16 h-16 bg-red-200 rounded-full flex items-center justify-center mx-auto mb-6">
+                  <svg className="w-8 h-8 text-red-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                  </svg>
+                </div>
+                <h3 className="text-xl font-semibold text-red-900 mb-3">Ошибка загрузки</h3>
+                <p className="text-red-600 mb-6">{error}</p>
+                <button
+                  onClick={() => window.location.reload()}
+                  className="bg-red-600 text-white px-6 py-3 rounded-full font-medium hover:bg-red-700 transition-colors duration-200"
+                >
+                  Обновить страницу
+                </button>
+              </div>
             </div>
           ) : null}
 
