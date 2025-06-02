@@ -1,18 +1,10 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   // Оптимизация бандла
-  experimental: {
-    optimizeCss: true,
-    turbotrace: {
-      logLevel: 'error'
-    }
-  },
+  experimental: {},
 
   // Сжатие
   compress: true,
-
-  // Минификация
-  swcMinify: true,
 
   images: {
     unoptimized: true,
