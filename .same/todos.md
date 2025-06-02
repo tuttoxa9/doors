@@ -11,8 +11,10 @@
 - [x] completed: Создать более детальный sitemap.xml
 - [x] completed: Добавить canonical URL
 - [x] completed: Улучшить robots.txt
-- [ ] in_progress: Добавить meta теги для социальных сетей
+- [x] completed: Добавить meta теги для социальных сетей
 
 ## Git и деплой
-- [ ] Настроить git remote с токеном
-- [ ] Сделать commit и push изменений
+- [x] completed: Настроить git remote с токеном
+- [x] completed: Сделать commit и push изменений
+
+## Все задачи выполнены! ✅
