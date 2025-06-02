@@ -44,8 +44,8 @@ export default function ShopSection({ onContactClick }: ShopSectionProps) {
           />
           {/* Dark overlay for better text readability */}
           <div className="absolute inset-0 bg-black/30" />
-          {/* Gradient overlay for smooth transition to white */}
-          <div className="absolute bottom-0 left-0 right-0 h-48 bg-gradient-to-t from-white via-white/95 via-white/80 via-white/60 via-white/30 to-transparent" />
+          {/* Gradient overlay for smooth transition to zinc-50 */}
+          <div className="absolute bottom-0 left-0 right-0 h-48 bg-gradient-to-t from-zinc-50 via-zinc-50/95 via-zinc-50/80 via-zinc-50/60 via-zinc-50/30 to-transparent" />
         </div>
 
         {/* Content */}
