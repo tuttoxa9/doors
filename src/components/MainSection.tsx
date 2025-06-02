@@ -2,7 +2,7 @@
 
 import { motion } from 'framer-motion'
 import { useState } from 'react'
-import { Star, ArrowRight, Phone, Mail, MapPin, Check } from 'lucide-react'
+import { Star, ArrowRight, Phone, Mail, MapPin, Check, Loader2, CheckCircle, XCircle } from 'lucide-react'
 import VideoBackground from './VideoBackground'
 
 interface MainSectionProps {
@@ -10,18 +10,51 @@ interface MainSectionProps {
   setShowContactForm?: (show: boolean) => void
 }
 
+type SubmissionStatus = 'idle' | 'loading' | 'success' | 'error'
+
 export default function MainSection({ showContactForm = false, setShowContactForm }: MainSectionProps) {
   const [formData, setFormData] = useState({
     name: '',
     phone: '+375',
     comment: ''
   })
+  const [submissionStatus, setSubmissionStatus] = useState<SubmissionStatus>('idle')
+  const [errorMessage, setErrorMessage] = useState('')
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
-    // Handle form submission logic here
-    console.log('Form submitted:', formData)
-    setShowContactForm?.(false)
+    setSubmissionStatus('loading')
+    setErrorMessage('')
+
+    try {
+      const response = await fetch('/.netlify/functions/send-to-telegram', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(formData),
+      })
+
+      const result = await response.json()
+
+      if (response.ok) {
+        setSubmissionStatus('success')
+        // Закрываем форму через 2 секунды после успешной отправки
+        setTimeout(() => {
+          setShowContactForm?.(false)
+          setSubmissionStatus('idle')
+          setFormData({ name: '', phone: '+375', comment: '' })
+        }, 2000)
+      } else {
+        setSubmissionStatus('error')
+        setErrorMessage(result.error || 'Произошла ошибка при отправке заявки')
+        setTimeout(() => setSubmissionStatus('idle'), 3000)
+      }
+    } catch (error) {
+      setSubmissionStatus('error')
+      setErrorMessage('Не удалось отправить заявку. Проверьте подключение к интернету.')
+      setTimeout(() => setSubmissionStatus('idle'), 3000)
+    }
   }
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
@@ -209,12 +242,42 @@ export default function MainSection({ showContactForm = false, setShowContactFor
                 </div>
                 <motion.button
                   type="submit"
-                  className="w-full bg-zinc-900 text-white py-3 rounded-lg font-medium hover:bg-zinc-800 transition-colors duration-200 font-durik"
-                  whileHover={{ scale: 1.02 }}
-                  whileTap={{ scale: 0.98 }}
+                  disabled={submissionStatus === 'loading'}
+                  className={`w-full py-3 rounded-lg font-medium transition-all duration-200 font-durik flex items-center justify-center space-x-2 ${
+                    submissionStatus === 'success'
+                      ? 'bg-green-600 text-white'
+                      : submissionStatus === 'error'
+                      ? 'bg-red-600 text-white'
+                      : 'bg-zinc-900 text-white hover:bg-zinc-800'
+                  } ${submissionStatus === 'loading' ? 'opacity-75 cursor-not-allowed' : ''}`}
+                  whileHover={submissionStatus === 'idle' ? { scale: 1.02 } : {}}
+                  whileTap={submissionStatus === 'idle' ? { scale: 0.98 } : {}}
                 >
-                  Отправить заявку
+                  {submissionStatus === 'loading' && (
+                    <Loader2 className="w-5 h-5 animate-spin" />
+                  )}
+                  {submissionStatus === 'success' && (
+                    <CheckCircle className="w-5 h-5" />
+                  )}
+                  {submissionStatus === 'error' && (
+                    <XCircle className="w-5 h-5" />
+                  )}
+                  <span>
+                    {submissionStatus === 'loading' && 'Отправка...'}
+                    {submissionStatus === 'success' && 'Отправлено!'}
+                    {submissionStatus === 'error' && 'Ошибка'}
+                    {submissionStatus === 'idle' && 'Отправить заявку'}
+                  </span>
                 </motion.button>
+                {submissionStatus === 'error' && errorMessage && (
+                  <motion.p
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    className="text-red-600 text-sm text-center"
+                  >
+                    {errorMessage}
+                  </motion.p>
+                )}
               </form>
             </div>
           </div>
@@ -373,12 +436,42 @@ export default function MainSection({ showContactForm = false, setShowContactFor
               </div>
               <motion.button
                 type="submit"
-                className="w-full bg-zinc-900 text-white py-3 rounded-lg font-medium hover:bg-zinc-800 transition-colors duration-200 font-durik"
-                whileHover={{ scale: 1.02 }}
-                whileTap={{ scale: 0.98 }}
+                disabled={submissionStatus === 'loading'}
+                className={`w-full py-3 rounded-lg font-medium transition-all duration-200 font-durik flex items-center justify-center space-x-2 ${
+                  submissionStatus === 'success'
+                    ? 'bg-green-600 text-white'
+                    : submissionStatus === 'error'
+                    ? 'bg-red-600 text-white'
+                    : 'bg-zinc-900 text-white hover:bg-zinc-800'
+                } ${submissionStatus === 'loading' ? 'opacity-75 cursor-not-allowed' : ''}`}
+                whileHover={submissionStatus === 'idle' ? { scale: 1.02 } : {}}
+                whileTap={submissionStatus === 'idle' ? { scale: 0.98 } : {}}
               >
-                Отправить заявку
+                {submissionStatus === 'loading' && (
+                  <Loader2 className="w-5 h-5 animate-spin" />
+                )}
+                {submissionStatus === 'success' && (
+                  <CheckCircle className="w-5 h-5" />
+                )}
+                {submissionStatus === 'error' && (
+                  <XCircle className="w-5 h-5" />
+                )}
+                <span>
+                  {submissionStatus === 'loading' && 'Отправка...'}
+                  {submissionStatus === 'success' && 'Отправлено!'}
+                  {submissionStatus === 'error' && 'Ошибка'}
+                  {submissionStatus === 'idle' && 'Отправить заявку'}
+                </span>
               </motion.button>
+              {submissionStatus === 'error' && errorMessage && (
+                <motion.p
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  className="text-red-600 text-sm text-center"
+                >
+                  {errorMessage}
+                </motion.p>
+              )}
             </form>
           </motion.div>
         </div>

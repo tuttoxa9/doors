@@ -1,70 +1,123 @@
 'use client'
 
 import { motion } from 'framer-motion'
-import { ArrowRight, Eye } from 'lucide-react'
+import { ArrowRight, Eye, Loader2 } from 'lucide-react'
+import { useState } from 'react'
+import { useProducts } from '@/hooks/useProducts'
+import ProductModal from './ProductModal'
+import type { Product } from '@/types/product'
 
 interface ShopSectionProps {
   onContactClick?: () => void
 }
 
 export default function ShopSection({ onContactClick }: ShopSectionProps) {
+  const { products, loading, error } = useProducts()
+  const [selectedProduct, setSelectedProduct] = useState<Product | null>(null)
+  const [isModalOpen, setIsModalOpen] = useState(false)
+
   const categories = [
-    { name: 'Шкафы-купе', count: 24 },
-    { name: 'Встроенные шкафы', count: 18 },
-    { name: 'Гардеробные', count: 12 },
-    { name: 'Детские шкафы', count: 8 }
+    { name: 'Шкафы-купе', count: products.filter(p => p.category === 'Шкафы-купе').length },
+    { name: 'Встроенные шкафы', count: products.filter(p => p.category === 'Встроенные шкафы').length },
+    { name: 'Гардеробные', count: products.filter(p => p.category === 'Гардеробные').length },
+    { name: 'Детские шкафы', count: products.filter(p => p.category === 'Детские шкафы').length }
   ]
 
-  const projects = [
-    {
-      id: 1,
-      title: 'Современный шкаф-купе',
-      category: 'Шкафы-купе',
-      image: 'https://images.unsplash.com/photo-1556228578-0d85b1a4d571?w=800&h=600&fit=crop',
-      price: 'от 2 125 BYN',
-      description: 'Минималистичный дизайн с зеркальными дверцами'
-    },
-    {
-      id: 2,
-      title: 'Встроенная гардеробная',
-      category: 'Гардеробные',
-      image: 'https://images.unsplash.com/photo-1565814329452-e1efa11c5b89?w=800&h=600&fit=crop',
-      price: 'от 3 000 BYN',
-      description: 'Полноценная система хранения с освещением'
-    },
-    {
-      id: 3,
-      title: 'Шкаф в прихожую',
-      category: 'Встроенные шкафы',
-      image: 'https://images.unsplash.com/photo-1586023492125-27b2c045efd7?w=800&h=600&fit=crop',
-      price: 'от 1 625 BYN',
-      description: 'Компактное решение для небольших пространств'
-    },
-    {
-      id: 4,
-      title: 'Детский шкаф-домик',
-      category: 'Детские шкафы',
-      image: 'https://images.unsplash.com/photo-1558618047-3c8c76ca7d13?w=800&h=600&fit=crop',
-      price: 'от 1 125 BYN',
-      description: 'Яркий и функциональный шкаф для детской комнаты'
-    },
-    {
-      id: 5,
-      title: 'Угловой шкаф-купе',
-      category: 'Шкафы-купе',
-      image: 'https://images.unsplash.com/photo-1586023492125-27b2c045efd7?w=800&h=600&fit=crop',
-      price: 'от 2 375 BYN',
-      description: 'Максимальное использование углового пространства'
-    },
-    {
-      id: 6,
-      title: 'Шкаф с подсветкой',
-      category: 'Встроенные шкафы',
-      image: 'https://images.unsplash.com/photo-1565814329452-e1efa11c5b89?w=800&h=600&fit=crop',
-      price: 'от 2 750 BYN',
-      description: 'Элегантное решение с LED-подсветкой'
+  const handleProductClick = (product: Product) => {
+    setSelectedProduct(product)
+    setIsModalOpen(true)
+  }
+
+  const formatPrice = (price: { min: number; max: number }) => {
+    if (price.min === price.max) {
+      return `${price.min.toLocaleString()} BYN`
     }
-  ]
+    return `от ${price.min.toLocaleString()} BYN`
+  }
+
+  // Показываем статичные проекты если Firebase не настроен или нет товаров
+  const fallbackProjects = [
+    {
+      id: 'fallback-1',
+      name: 'Современный шкаф-купе',
+      category: 'Шкафы-купе',
+      images: ['https://images.unsplash.com/photo-1556228578-0d85b1a4d571?w=800&h=600&fit=crop'],
+      price: { min: 2125, max: 2125 },
+      description: 'Минималистичный дизайн с зеркальными дверцами',
+      colors: ['Белый', 'Венге'],
+      inStock: true,
+      featured: false,
+      createdAt: new Date(),
+      updatedAt: new Date()
+    },
+    {
+      id: 'fallback-2',
+      name: 'Встроенная гардеробная',
+      category: 'Гардеробные',
+      images: ['https://images.unsplash.com/photo-1565814329452-e1efa11c5b89?w=800&h=600&fit=crop'],
+      price: { min: 3000, max: 3000 },
+      description: 'Полноценная система хранения с освещением',
+      colors: ['Дуб сонома', 'Венге магия'],
+      inStock: true,
+      featured: true,
+      createdAt: new Date(),
+      updatedAt: new Date()
+    },
+    {
+      id: 'fallback-3',
+      name: 'Шкаф в прихожую',
+      category: 'Встроенные шкафы',
+      images: ['https://images.unsplash.com/photo-1586023492125-27b2c045efd7?w=800&h=600&fit=crop'],
+      price: { min: 1625, max: 1625 },
+      description: 'Компактное решение для небольших пространств',
+      colors: ['Белый', 'Серый шифер'],
+      inStock: true,
+      featured: false,
+      createdAt: new Date(),
+      updatedAt: new Date()
+    },
+    {
+      id: 'fallback-4',
+      name: 'Детский шкаф-домик',
+      category: 'Детские шкафы',
+      images: ['https://images.unsplash.com/photo-1558618047-3c8c76ca7d13?w=800&h=600&fit=crop'],
+      price: { min: 1125, max: 1125 },
+      description: 'Яркий и функциональный шкаф для детской комнаты',
+      colors: ['Белый', 'Свой цвет'],
+      inStock: true,
+      featured: false,
+      createdAt: new Date(),
+      updatedAt: new Date()
+    },
+    {
+      id: 'fallback-5',
+      name: 'Угловой шкаф-купе',
+      category: 'Шкафы-купе',
+      images: ['https://images.unsplash.com/photo-1586023492125-27b2c045efd7?w=800&h=600&fit=crop'],
+      price: { min: 2375, max: 2375 },
+      description: 'Максимальное использование углового пространства',
+      colors: ['Дуб сонома', 'Белый'],
+      inStock: true,
+      featured: false,
+      createdAt: new Date(),
+      updatedAt: new Date()
+    },
+    {
+      id: 'fallback-6',
+      name: 'Шкаф с подсветкой',
+      category: 'Встроенные шкафы',
+      images: ['https://images.unsplash.com/photo-1565814329452-e1efa11c5b89?w=800&h=600&fit=crop'],
+      price: { min: 2750, max: 2750 },
+      description: 'Элегантное решение с LED-подсветкой',
+      colors: ['Венге магия', 'Белый'],
+      inStock: true,
+      featured: false,
+      createdAt: new Date(),
+      updatedAt: new Date()
+    }
+  ] as Product[]
+
+  const displayProducts = products.length > 0 ? products : fallbackProjects
 
   return (
     <div className="min-h-screen">
@@ -130,16 +183,30 @@ export default function ShopSection({ onContactClick }: ShopSectionProps) {
           >
             Портфолио работ
           </h2>
+
+          {loading ? (
+            <div className="flex justify-center items-center py-20">
+              <Loader2 className="w-8 h-8 animate-spin text-zinc-600" />
+              <span className="ml-3 text-zinc-600">Загрузка товаров...</span>
+            </div>
+          ) : error && products.length === 0 ? (
+            <div className="text-center py-20">
+              <p className="text-zinc-600 mb-4">Не удалось загрузить товары из базы данных</p>
+              <p className="text-sm text-zinc-500">Показываем демонстрационные товары</p>
+            </div>
+          ) : null}
+
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {projects.map((project, index) => (
+            {displayProducts.map((product) => (
               <div
-                key={project.id}
-                className="bg-white rounded-2xl overflow-hidden shadow-lg hover:shadow-xl transition-shadow duration-300 group"
+                key={product.id}
+                className="bg-white rounded-2xl overflow-hidden shadow-lg hover:shadow-xl transition-shadow duration-300 group cursor-pointer"
+                onClick={() => handleProductClick(product)}
               >
                 <div className="relative overflow-hidden">
                   <img
-                    src={project.image}
-                    alt={project.title}
+                    src={product.images[0] || 'https://images.unsplash.com/photo-1556228578-0d85b1a4d571?w=800&h=600&fit=crop'}
+                    alt={product.name}
                     className="w-full h-64 object-cover group-hover:scale-105 transition-transform duration-300"
                   />
                   <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors duration-300 flex items-center justify-center opacity-0 group-hover:opacity-100">
@@ -149,14 +216,42 @@ export default function ShopSection({ onContactClick }: ShopSectionProps) {
                       </button>
                     </div>
                   </div>
+                  {product.featured && (
+                    <div className="absolute top-4 left-4">
+                      <span className="bg-yellow-400 text-yellow-900 px-3 py-1 rounded-full text-sm font-medium">
+                        ⭐ Популярное
+                      </span>
+                    </div>
+                  )}
+                  {!product.inStock && (
+                    <div className="absolute top-4 right-4">
+                      <span className="bg-red-500 text-white px-3 py-1 rounded-full text-sm font-medium">
+                        Нет в наличии
+                      </span>
+                    </div>
+                  )}
                 </div>
                 <div className="p-6">
                   <div className="flex items-center justify-between mb-2">
-                    <span className="text-sm text-zinc-500 font-medium">{project.category}</span>
-                    <span className="text-lg font-bold text-zinc-900">{project.price}</span>
+                    <span className="text-sm text-zinc-500 font-medium">{product.category}</span>
+                    <span className="text-lg font-bold text-zinc-900">{formatPrice(product.price)}</span>
                   </div>
-                  <h3 className="text-xl font-semibold text-zinc-900 mb-2">{project.title}</h3>
-                  <p className="text-zinc-600 mb-4">{project.description}</p>
+                  <h3 className="text-xl font-semibold text-zinc-900 mb-2">{product.name}</h3>
+                  <p className="text-zinc-600 mb-4">{product.description}</p>
+
+                  {product.colors.length > 0 && (
+                    <div className="flex flex-wrap gap-1 mb-4">
+                      {product.colors.slice(0, 3).map((color) => (
+                        <span key={color} className="text-xs bg-zinc-100 text-zinc-700 px-2 py-1 rounded">
+                          {color}
+                        </span>
+                      ))}
+                      {product.colors.length > 3 && (
+                        <span className="text-xs text-zinc-500">+{product.colors.length - 3}</span>
+                      )}
+                    </div>
+                  )}
+
                   <button className="flex items-center space-x-2 text-zinc-900 font-medium hover:text-zinc-700 transition-colors duration-200">
                     <span>Подробнее</span>
                     <ArrowRight className="w-4 h-4" />
@@ -167,6 +262,17 @@ export default function ShopSection({ onContactClick }: ShopSectionProps) {
           </div>
         </div>
       </section>
+
+      {/* Product Modal */}
+      <ProductModal
+        product={selectedProduct}
+        isOpen={isModalOpen}
+        onClose={() => {
+          setIsModalOpen(false)
+          setSelectedProduct(null)
+        }}
+        onContactClick={onContactClick}
+      />
 
       {/* Popular Solutions */}
       <section className="py-20 bg-white">
