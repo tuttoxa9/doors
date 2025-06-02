@@ -1,4 +1,3 @@
-```tsx
 'use client'
 
 import { motion } from 'framer-motion'
@@ -51,7 +50,7 @@ export default function Header({ scrollY, activeSection, setActiveSection, onCon
             <button
               onClick={() => setActiveSection('main')}
               className={cn(
-                "text-lg font-medium transition-colors duration-200",
+                "px-6 py-2 rounded-full text-lg font-medium transition-colors duration-200",
                 activeSection === 'main'
                   ? "text-zinc-900 font-semibold bg-white"
                   : "bg-zinc-900 text-white hover:bg-zinc-800"
@@ -62,7 +61,7 @@ export default function Header({ scrollY, activeSection, setActiveSection, onCon
             <button
               onClick={() => setActiveSection('shop')}
               className={cn(
-                "text-lg font-medium transition-colors duration-200",
+                "px-6 py-2 rounded-full text-lg font-medium transition-colors duration-200",
                 activeSection === 'shop'
                   ? "text-zinc-900 font-semibold bg-white"
                   : "bg-zinc-900 text-white hover:bg-zinc-800"
@@ -98,4 +97,3 @@ export default function Header({ scrollY, activeSection, setActiveSection, onCon
     </motion.header>
   )
 }
-```

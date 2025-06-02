@@ -1,22 +1,20 @@
-# Doors Project TODO List
+# Исправление проекта doors
 
-## Main Tasks
-- [x] **COMPLETED** - Make header more transparent with glass effect (keep blur)
-- [x] **COMPLETED** - Remove ALL mock data from shop
-- [x] **COMPLETED** - Make modal window more compact and responsive for mobile
-- [x] **COMPLETED** - Keep desktop modal as is
-- [x] **COMPLETED** - Push changes to GitHub repository
+## Основные задачи
 
-## Technical Steps
-- [ ] Analyze current project structure
-- [ ] Install dependencies and start dev server
-- [ ] Find and update header component for transparency/glass effect
-- [ ] Locate and remove mock shop data
-- [ ] Update ProductModal component for mobile responsiveness
-- [ ] Set up git remote with provided token
-- [ ] Commit and push changes
+- [x] **Анализ структуры проекта** - проверить package.json, next.config.js, и другие конфигурационные файлы
+- [x] **Установка зависимостей** - выполнить bun install и проверить зависимости
+- [x] **Запуск dev сервера** - попробовать запустить проект и выявить ошибки
+- [x] **Исправление ошибок** - решить проблемы, мешающие запуску
+- [x] **Настройка Firebase** - проверить конфигурацию Firebase
+- [x] **Настройка деплоя** - проверить netlify.toml и настройки деплоя
+- [ ] **Тестирование** - убедиться что сайт работает корректно
+- [ ] **Push в GitHub** - загрузить исправления в репозиторий
+- [ ] **Деплой** - развернуть сайт на Netlify
 
-## Git Setup
-- Repository: https://github.com/tuttoxa9/doors
-- Token: [REDACTED]
-- Branch: main
+## Исправленные проблемы
+
+- [x] **Убраны markdown блоки** - из firebase.ts и Header.tsx файлов
+- [x] **Исправлен netlify.toml** - изменен publish путь с ".next" на "out" для статического экспорта
+- [x] **Улучшен Header** - добавлены правильные стили для кнопок навигации
+- [x] **Проверен линтер** - все ошибки линтера исправлены
