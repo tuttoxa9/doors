@@ -6,6 +6,7 @@ import Header from '@/components/Header'
 import MainSection from '@/components/MainSection'
 import ShopSection from '@/components/ShopSection'
 import Footer from '@/components/Footer'
+import ContactModal from '@/components/ContactModal'
 
 type ActiveSection = 'main' | 'shop'
 
@@ -82,6 +83,12 @@ export default function Home() {
       </main>
 
       <Footer />
+
+      {/* Global Contact Modal */}
+      <ContactModal
+        isOpen={showContactForm}
+        onClose={() => setShowContactForm(false)}
+      />
     </div>
   )
 }
