@@ -89,53 +89,120 @@ export default function ShoppingCart({ onOrderSubmit }: ShoppingCartProps) {
   return (
     <AnimatePresence>
       {isCartOpen && (
-        <div className="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          className="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center p-4"
+          onClick={() => setIsCartOpen(false)}
+        >
           <motion.div
-            initial={{ opacity: 0, scale: 0.9, y: 20 }}
+            initial={{ opacity: 0, scale: 0.8, y: 50 }}
             animate={{ opacity: 1, scale: 1, y: 0 }}
-            exit={{ opacity: 0, scale: 0.9, y: 20 }}
-            transition={{ type: 'spring', damping: 25, stiffness: 300 }}
-            className="bg-white rounded-3xl max-w-2xl w-full max-h-[90vh] overflow-hidden shadow-2xl"
+            exit={{ opacity: 0, scale: 0.8, y: 50 }}
+            transition={{
+              type: 'spring',
+              damping: 20,
+              stiffness: 300,
+              mass: 0.8
+            }}
+            className="bg-white rounded-3xl max-w-2xl w-full max-h-[90vh] overflow-hidden shadow-[0_32px_64px_-12px_rgba(0,0,0,0.25),0_16px_32px_-8px_rgba(0,0,0,0.1)] border border-white/20"
+            onClick={(e) => e.stopPropagation()}
           >
             {/* Header */}
-            <div className="flex items-center justify-between p-6 border-b border-zinc-200">
+            <motion.div
+              initial={{ opacity: 0, y: -20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.1 }}
+              className="flex items-center justify-between p-6 border-b border-zinc-200/60 bg-gradient-to-r from-white to-zinc-50"
+            >
               <div className="flex items-center space-x-3">
-                <div className="p-2 bg-zinc-100 rounded-xl">
+                <motion.div
+                  initial={{ scale: 0, rotate: -180 }}
+                  animate={{ scale: 1, rotate: 0 }}
+                  transition={{ delay: 0.2, type: 'spring', damping: 15, stiffness: 400 }}
+                  className="p-3 bg-gradient-to-br from-zinc-100 to-zinc-200 rounded-xl shadow-sm"
+                >
                   <ShoppingBag className="w-6 h-6 text-zinc-900" />
-                </div>
-                <div>
+                </motion.div>
+                <motion.div
+                  initial={{ opacity: 0, x: -20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ delay: 0.3 }}
+                >
                   <h2 className="text-xl font-bold text-zinc-900">Корзина</h2>
-                  <p className="text-sm text-zinc-500">{getTotalItems()} товаров</p>
-                </div>
+                  <motion.p
+                    key={getTotalItems()}
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    className="text-sm text-zinc-500"
+                  >
+                    {getTotalItems()} {getTotalItems() === 1 ? 'товар' : getTotalItems() < 5 ? 'товара' : 'товаров'}
+                  </motion.p>
+                </motion.div>
               </div>
-              <button
+              <motion.button
+                initial={{ opacity: 0, scale: 0 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{ delay: 0.4 }}
                 onClick={() => setIsCartOpen(false)}
-                className="p-2 hover:bg-zinc-100 rounded-full transition-colors duration-200"
+                className="p-2 hover:bg-zinc-100 rounded-full transition-colors duration-200 hover:scale-110"
+                whileHover={{ scale: 1.1 }}
+                whileTap={{ scale: 0.9 }}
               >
                 <X className="w-6 h-6 text-zinc-600" />
-              </button>
-            </div>
+              </motion.button>
+            </motion.div>
 
             {/* Content */}
             <div className="flex-1 overflow-y-auto max-h-96">
               {items.length === 0 ? (
-                <div className="p-8 text-center">
-                  <div className="w-16 h-16 bg-zinc-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                    <ShoppingBag className="w-8 h-8 text-zinc-400" />
-                  </div>
-                  <h3 className="text-lg font-semibold text-zinc-900 mb-2">Корзина пуста</h3>
-                  <p className="text-zinc-500">Добавьте товары из каталога</p>
-                </div>
+                <motion.div
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  className="p-8 text-center"
+                >
+                  <motion.div
+                    initial={{ scale: 0 }}
+                    animate={{ scale: 1 }}
+                    transition={{ type: 'spring', delay: 0.1, damping: 15, stiffness: 400 }}
+                    className="w-20 h-20 bg-gradient-to-br from-zinc-100 to-zinc-200 rounded-full flex items-center justify-center mx-auto mb-6 shadow-sm"
+                  >
+                    <ShoppingBag className="w-10 h-10 text-zinc-400" />
+                  </motion.div>
+                  <motion.h3
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 0.2 }}
+                    className="text-lg font-semibold text-zinc-900 mb-2"
+                  >
+                    Корзина пуста
+                  </motion.h3>
+                  <motion.p
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 0.3 }}
+                    className="text-zinc-500"
+                  >
+                    Добавьте товары из каталога
+                  </motion.p>
+                </motion.div>
               ) : (
                 <div className="p-6 space-y-4">
-                  {items.map((item) => (
+                  {items.map((item, index) => (
                     <motion.div
                       key={`${item.product.id}-${item.selectedColor || 'default'}`}
                       layout
-                      initial={{ opacity: 0, y: 20 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      exit={{ opacity: 0, y: -20 }}
-                      className="flex items-center space-x-4 p-4 bg-zinc-50 rounded-2xl"
+                      initial={{ opacity: 0, y: 20, scale: 0.95 }}
+                      animate={{ opacity: 1, y: 0, scale: 1 }}
+                      exit={{ opacity: 0, y: -20, scale: 0.95 }}
+                      transition={{
+                        delay: index * 0.05,
+                        type: 'spring',
+                        damping: 20,
+                        stiffness: 300
+                      }}
+                      className="flex items-center space-x-4 p-4 bg-gradient-to-r from-zinc-50 to-white rounded-2xl shadow-sm border border-zinc-100 hover:shadow-md transition-shadow duration-300"
                     >
                       {/* Product Image */}
                       <div className="w-16 h-16 rounded-xl overflow-hidden flex-shrink-0">
@@ -166,29 +233,42 @@ export default function ShoppingCart({ onOrderSubmit }: ShoppingCartProps) {
                       </div>
 
                       {/* Quantity Controls */}
-                      <div className="flex items-center space-x-2">
-                        <button
+                      <div className="flex items-center space-x-1 bg-white rounded-xl p-1 shadow-sm border border-zinc-200">
+                        <motion.button
                           onClick={() => updateQuantity(item.product.id, item.quantity - 1)}
-                          className="p-1 hover:bg-white rounded-lg transition-colors duration-200"
+                          className="p-2 hover:bg-zinc-100 rounded-lg transition-colors duration-200"
+                          whileHover={{ scale: 1.1 }}
+                          whileTap={{ scale: 0.9 }}
                         >
                           <Minus className="w-4 h-4 text-zinc-600" />
-                        </button>
-                        <span className="w-8 text-center font-medium text-zinc-900">{item.quantity}</span>
-                        <button
+                        </motion.button>
+                        <motion.span
+                          key={item.quantity}
+                          initial={{ scale: 1.2 }}
+                          animate={{ scale: 1 }}
+                          className="w-8 text-center font-semibold text-zinc-900 select-none"
+                        >
+                          {item.quantity}
+                        </motion.span>
+                        <motion.button
                           onClick={() => updateQuantity(item.product.id, item.quantity + 1)}
-                          className="p-1 hover:bg-white rounded-lg transition-colors duration-200"
+                          className="p-2 hover:bg-zinc-100 rounded-lg transition-colors duration-200"
+                          whileHover={{ scale: 1.1 }}
+                          whileTap={{ scale: 0.9 }}
                         >
                           <Plus className="w-4 h-4 text-zinc-600" />
-                        </button>
+                        </motion.button>
                       </div>
 
                       {/* Remove Button */}
-                      <button
+                      <motion.button
                         onClick={() => removeFromCart(item.product.id)}
                         className="p-2 hover:bg-red-100 rounded-lg transition-colors duration-200 text-red-500"
+                        whileHover={{ scale: 1.1, rotate: 10 }}
+                        whileTap={{ scale: 0.9 }}
                       >
                         <Trash2 className="w-4 h-4" />
-                      </button>
+                      </motion.button>
                     </motion.div>
                   ))}
                 </div>
@@ -197,26 +277,52 @@ export default function ShoppingCart({ onOrderSubmit }: ShoppingCartProps) {
 
             {/* Footer */}
             {items.length > 0 && !showOrderForm && (
-              <div className="p-6 border-t border-zinc-200">
-                <div className="flex items-center justify-between mb-4">
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.2 }}
+                className="p-6 border-t border-zinc-200/60 bg-gradient-to-r from-zinc-50 to-white"
+              >
+                <motion.div
+                  className="flex items-center justify-between mb-4"
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  transition={{ delay: 0.3 }}
+                >
                   <span className="text-lg font-semibold text-zinc-900">Итого:</span>
-                  <span className="text-xl font-bold text-zinc-900">{formatPrice(getTotalPrice())}</span>
-                </div>
-                <div className="flex space-x-3">
-                  <button
+                  <motion.span
+                    key={getTotalPrice()}
+                    initial={{ scale: 1.1 }}
+                    animate={{ scale: 1 }}
+                    className="text-xl font-bold text-zinc-900"
+                  >
+                    {formatPrice(getTotalPrice())}
+                  </motion.span>
+                </motion.div>
+                <motion.div
+                  className="flex space-x-3"
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.4 }}
+                >
+                  <motion.button
                     onClick={() => setShowOrderForm(true)}
-                    className="flex-1 bg-zinc-900 text-white py-3 px-6 rounded-xl font-semibold hover:bg-zinc-800 transition-colors duration-200"
+                    className="flex-1 bg-gradient-to-r from-zinc-900 to-zinc-800 text-white py-3 px-6 rounded-xl font-semibold hover:from-zinc-800 hover:to-zinc-700 transition-all duration-200 shadow-lg hover:shadow-xl"
+                    whileHover={{ scale: 1.02 }}
+                    whileTap={{ scale: 0.98 }}
                   >
                     Оформить заказ
-                  </button>
-                  <button
+                  </motion.button>
+                  <motion.button
                     onClick={clearCart}
-                    className="px-6 py-3 border-2 border-zinc-300 text-zinc-700 rounded-xl font-semibold hover:border-zinc-500 transition-colors duration-200"
+                    className="px-6 py-3 border-2 border-zinc-300 text-zinc-700 rounded-xl font-semibold hover:border-zinc-500 hover:bg-zinc-50 transition-all duration-200"
+                    whileHover={{ scale: 1.02 }}
+                    whileTap={{ scale: 0.98 }}
                   >
                     Очистить
-                  </button>
-                </div>
-              </div>
+                  </motion.button>
+                </motion.div>
+              </motion.div>
             )}
 
             {/* Order Form */}
@@ -320,7 +426,7 @@ export default function ShoppingCart({ onOrderSubmit }: ShoppingCartProps) {
               </motion.div>
             )}
           </motion.div>
-        </div>
+        </motion.div>
       )}
     </AnimatePresence>
   )
