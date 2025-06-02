@@ -5,97 +5,17 @@ import { ArrowRight, Eye } from 'lucide-react'
 import { useState } from 'react'
 import ProductModal from './ProductModal'
 import OptimizedImage from './OptimizedImage'
+import { useProducts } from '@/hooks/useProducts'
 import type { Product } from '@/types/product'
 
 interface ShopSectionProps {
   onContactClick?: () => void
 }
 
-// Реальные товары MAESTRO
-const staticProducts: Product[] = [
-  {
-    id: '1',
-    name: 'Шкаф-купе трёхдверный с зеркалом',
-    category: 'Шкафы-купе',
-    price: { min: 1200, max: 1800 },
-    description: 'Классический трёхдверный шкаф-купе с зеркальными вставками. Система направляющих ARISTO (Австрия). Внутреннее наполнение: штанги для одежды, полки, выдвижные ящики. Размеры: ширина 200-250 см, высота до потолка.',
-    colors: ['Белый глянец', 'Венге', 'Дуб молочный', 'Графит матовый'],
-    images: ['/showroom.webp'],
-    inStock: true,
-    featured: true,
-    createdAt: new Date(),
-    updatedAt: new Date()
-  },
-  {
-    id: '2',
-    name: 'Встроенный угловой шкаф',
-    category: 'Встроенные шкафы',
-    price: { min: 1500, max: 2200 },
-    description: 'Угловой встроенный шкаф максимально использует пространство комнаты. Индивидуальное проектирование под ваши размеры. Включает: штанги разной высоты, полки для белья, обувные секции, зеркало на внутренней стороне двери.',
-    colors: ['Дуб сонома', 'Белый матовый', 'Ясень шимо', 'Венге магия'],
-    images: ['/showroom.webp'],
-    inStock: true,
-    featured: true,
-    createdAt: new Date(),
-    updatedAt: new Date()
-  },
-  {
-    id: '3',
-    name: 'Детский шкаф "Растём вместе"',
-    category: 'Детские шкафы',
-    price: { min: 800, max: 1300 },
-    description: 'Безопасный детский шкаф с регулируемыми полками, которые "растут" вместе с ребёнком. Экологически чистые материалы, закруглённые углы, доводчики на всех дверцах. Яркие цветовые решения.',
-    colors: ['Бело-розовый', 'Бело-голубой', 'Салатовый', 'Жёлто-белый'],
-    images: ['/showroom.webp'],
-    inStock: true,
-    featured: false,
-    createdAt: new Date(),
-    updatedAt: new Date()
-  },
-  {
-    id: '4',
-    name: 'Гардеробная система "Лофт"',
-    category: 'Гардеробные',
-    price: { min: 2500, max: 4500 },
-    description: 'Современная гардеробная в стиле лофт с открытыми стеллажами и металлическими элементами. Включает: зоны для верхней одежды, костюмов, белья, обуви, аксессуаров. LED-подсветка, выдвижные корзины.',
-    colors: ['Дуб крафт серый', 'Бетон чикаго', 'Индастриал', 'Лофт дарк'],
-    images: ['/showroom.webp'],
-    inStock: true,
-    featured: true,
-    createdAt: new Date(),
-    updatedAt: new Date()
-  },
-  {
-    id: '5',
-    name: 'Шкаф-купе двухдверный компакт',
-    category: 'Шкафы-купе',
-    price: { min: 900, max: 1400 },
-    description: 'Компактный двухдверный шкаф-купе для небольших помещений. Оптимальное соотношение цена-качество. Немецкая фурнитура BLUM, зеркальные или матовые фасады на выбор.',
-    colors: ['Белый', 'Дуб', 'Венге', 'Серый матовый'],
-    images: ['/showroom.webp'],
-    inStock: true,
-    featured: false,
-    createdAt: new Date(),
-    updatedAt: new Date()
-  },
-  {
-    id: '6',
-    name: 'Встроенный шкаф в нишу',
-    category: 'Встроенные шкафы',
-    price: { min: 1100, max: 1900 },
-    description: 'Шкаф, идеально встраиваемый в нишу или под скос крыши. Максимальное использование нестандартного пространства. Индивидуальный замер и проектирование бесплатно.',
-    colors: ['Под дерево', 'Белый глянец', 'Графит', 'Комбинированный'],
-    images: ['/showroom.webp'],
-    inStock: true,
-    featured: false,
-    createdAt: new Date(),
-    updatedAt: new Date()
-  }
-]
-
 export default function ShopSection({ onContactClick }: ShopSectionProps) {
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null)
   const [isModalOpen, setIsModalOpen] = useState(false)
+  const { products, isLoading, isError, error } = useProducts()
 
   const handleProductClick = (product: Product) => {
     setSelectedProduct(product)
@@ -108,8 +28,6 @@ export default function ShopSection({ onContactClick }: ShopSectionProps) {
     }
     return `от ${price.min.toLocaleString()} BYN`
   }
-
-  const displayProducts = staticProducts
 
   return (
     <div className="min-h-screen">
@@ -154,7 +72,38 @@ export default function ShopSection({ onContactClick }: ShopSectionProps) {
             Магазин
           </h2>
 
-          {displayProducts.length === 0 ? (
+          {/* Loading State */}
+          {isLoading && (
+            <div className="text-center py-20">
+              <div className="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-zinc-900" />
+              <p className="mt-4 text-zinc-600">Загружаем товары...</p>
+            </div>
+          )}
+
+          {/* Error State */}
+          {isError && (
+            <div className="text-center py-20 bg-red-50 rounded-2xl">
+              <div className="max-w-md mx-auto">
+                <div className="w-16 h-16 bg-red-200 rounded-full flex items-center justify-center mx-auto mb-6">
+                  <svg className="w-8 h-8 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                  </svg>
+                </div>
+                <h3 className="text-xl font-semibold text-red-900 mb-3">Ошибка загрузки</h3>
+                <p className="text-red-600 mb-2">Не удалось загрузить товары из базы данных.</p>
+                {error && <p className="text-sm text-red-500 mb-6">{error}</p>}
+                <button
+                  onClick={() => window.location.reload()}
+                  className="bg-red-600 text-white px-6 py-3 rounded-full font-medium hover:bg-red-700 transition-colors duration-200"
+                >
+                  Попробовать снова
+                </button>
+              </div>
+            </div>
+          )}
+
+          {/* Empty State */}
+          {!isLoading && !isError && products.length === 0 && (
             <div className="text-center py-20 bg-zinc-50 rounded-2xl">
               <div className="max-w-md mx-auto">
                 <div className="w-16 h-16 bg-zinc-200 rounded-full flex items-center justify-center mx-auto mb-6">
@@ -173,9 +122,12 @@ export default function ShopSection({ onContactClick }: ShopSectionProps) {
                 </button>
               </div>
             </div>
-          ) : (
+          )}
+
+          {/* Products Grid */}
+          {!isLoading && !isError && products.length > 0 && (
             <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-              {displayProducts.map((product) => (
+              {products.map((product) => (
                 <div
                   key={product.id}
                   className="bg-white rounded-2xl overflow-hidden shadow-lg hover:shadow-xl transition-shadow duration-300 group cursor-pointer"

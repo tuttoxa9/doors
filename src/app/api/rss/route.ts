@@ -1,60 +1,97 @@
 import { NextResponse } from 'next/server';
+import { collection, getDocs, query, orderBy, limit } from 'firebase/firestore';
+import { db } from '@/lib/firebase';
+import type { Product } from '@/types/product';
 
 export async function GET() {
   const baseUrl = 'https://maestroworks.ru';
   const lastBuildDate = new Date().toUTCString();
 
-  const rssItems = [
-    {
-      title: 'Новинка: Шкаф-купе трёхдверный с зеркалом',
-      description: 'Представляем классический трёхдверный шкаф-купе с зеркальными вставками и австрийской системой направляющих ARISTO. Цена от 1200 BYN.',
-      link: `${baseUrl}#shop`,
-      pubDate: new Date('2024-12-01').toUTCString(),
-      guid: `${baseUrl}/products/wardrobe-three-door-mirror`,
-    },
-    {
-      title: 'Встроенный угловой шкаф - максимум пространства',
-      description: 'Угловой встроенный шкаф с индивидуальным проектированием. Оптимальное использование углового пространства. От 1500 BYN.',
-      link: `${baseUrl}#shop`,
-      pubDate: new Date('2024-11-28').toUTCString(),
-      guid: `${baseUrl}/products/corner-built-in-wardrobe`,
-    },
-    {
-      title: 'Детский шкаф "Растём вместе" - безопасность прежде всего',
-      description: 'Экологически чистый детский шкаф с регулируемыми полками. Закруглённые углы, доводчики, яркие цвета. От 800 BYN.',
-      link: `${baseUrl}#shop`,
-      pubDate: new Date('2024-11-25').toUTCString(),
-      guid: `${baseUrl}/products/children-grow-together`,
-    },
-    {
-      title: 'Гардеробная система "Лофт" - современный стиль',
-      description: 'Стильная гардеробная в стиле лофт с LED-подсветкой и выдвижными корзинами. Металлические элементы, открытые стеллажи. От 2500 BYN.',
-      link: `${baseUrl}#shop`,
-      pubDate: new Date('2024-11-22').toUTCString(),
-      guid: `${baseUrl}/products/loft-wardrobe-system`,
-    },
-    {
-      title: 'Компактный шкаф-купе - решение для малогабаритных квартир',
-      description: 'Двухдверный шкаф-купе с немецкой фурнитурой BLUM. Идеально подходит для небольших помещений. От 900 BYN.',
-      link: `${baseUrl}#shop`,
-      pubDate: new Date('2024-11-20').toUTCString(),
-      guid: `${baseUrl}/products/compact-wardrobe`,
-    },
-    {
-      title: 'Встроенный шкаф в нишу - индивидуальные решения',
-      description: 'Шкаф для нестандартных ниш и скосов. Бесплатный замер и проектирование. Максимальное использование пространства. От 1100 BYN.',
-      link: `${baseUrl}#shop`,
-      pubDate: new Date('2024-11-18').toUTCString(),
-      guid: `${baseUrl}/products/niche-built-in-wardrobe`,
-    },
-    {
-      title: 'Акция: Скидка 15% на заказы до конца года',
-      description: 'При заказе любого шкафа до 31 декабря действует скидка 15%. Также бесплатная 3D-визуализация и доставка по Минску!',
-      link: `${baseUrl}`,
-      pubDate: new Date('2024-11-15').toUTCString(),
-      guid: `${baseUrl}/promotions/year-end-discount`,
+  let rssItems: Array<{
+    title: string;
+    description: string;
+    link: string;
+    pubDate: string;
+    guid: string;
+  }> = [];
+
+  try {
+    // Получаем товары из Firebase
+    const q = query(
+      collection(db, 'products'),
+      orderBy('createdAt', 'desc'),
+      limit(10) // Ограничиваем количество товаров в RSS
+    );
+
+    const querySnapshot = await getDocs(q);
+
+    const formatPrice = (price: { min: number; max: number }) => {
+      if (price.min === price.max) {
+        return `${price.min.toLocaleString()} BYN`;
+      }
+      return `от ${price.min.toLocaleString()} BYN`;
+    };
+
+    for (const doc of querySnapshot.docs) {
+      const data = doc.data();
+      const product: Product = {
+        id: doc.id,
+        name: data.name || '',
+        category: data.category || '',
+        price: {
+          min: data.price?.min || 0,
+          max: data.price?.max || 0,
+        },
+        description: data.description || '',
+        colors: Array.isArray(data.colors) ? data.colors : [],
+        images: Array.isArray(data.images) ? data.images : [],
+        inStock: Boolean(data.inStock),
+        featured: Boolean(data.featured),
+        createdAt: data.createdAt?.toDate() || new Date(),
+        updatedAt: data.updatedAt?.toDate() || new Date(),
+      };
+
+      rssItems.push({
+        title: `${product.featured ? '⭐ ' : ''}${product.name}`,
+        description: `${product.description} Цена: ${formatPrice(product.price)}. Категория: ${product.category}.${product.inStock ? '' : ' Нет в наличии.'}`,
+        link: `${baseUrl}#shop`,
+        pubDate: product.createdAt.toUTCString(),
+        guid: `${baseUrl}/products/${product.id}`,
+      });
     }
-  ];
+
+    // Добавляем общие новости, если товаров мало
+    if (rssItems.length < 5) {
+      rssItems.push({
+        title: 'Акция: Скидка 15% на заказы до конца года',
+        description: 'При заказе любого шкафа до 31 декабря действует скидка 15%. Также бесплатная 3D-визуализация и доставка по Минску!',
+        link: baseUrl,
+        pubDate: new Date('2024-11-15').toUTCString(),
+        guid: `${baseUrl}/promotions/year-end-discount`,
+      });
+    }
+
+  } catch (error) {
+    console.error('Ошибка при загрузке товаров для RSS:', error);
+
+    // В случае ошибки используем базовые новости
+    rssItems = [
+      {
+        title: 'MAESTRO - Мебель на заказ в Минске',
+        description: 'Изготовление качественных шкафов, гардеробных и встроенной мебели по индивидуальным размерам. Бесплатный замер и 3D-визуализация.',
+        link: baseUrl,
+        pubDate: new Date().toUTCString(),
+        guid: `${baseUrl}/about`,
+      },
+      {
+        title: 'Акция: Скидка 15% на заказы до конца года',
+        description: 'При заказе любого шкафа до 31 декабря действует скидка 15%. Также бесплатная 3D-визуализация и доставка по Минску!',
+        link: baseUrl,
+        pubDate: new Date('2024-11-15').toUTCString(),
+        guid: `${baseUrl}/promotions/year-end-discount`,
+      }
+    ];
+  }
 
   const rssXml = `<?xml version="1.0" encoding="UTF-8"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
