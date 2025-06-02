@@ -5,6 +5,8 @@ Allow: /
 Disallow: /admin/
 Disallow: /.netlify/
 Disallow: /api/
+# Allow RSS feed
+Allow: /api/rss
 
 # Allow all images
 Allow: /images/

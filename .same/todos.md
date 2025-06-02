@@ -1,41 +1,18 @@
-# План оптимизации проекта DOORS
+# Задачи по улучшению SEO и добавлению RSS фида
 
-## Задачи оптимизации:
+## RSS фид
+- [x] completed: Создать API роут для RSS фида (/api/rss)
+- [x] completed: Добавить ссылку на RSS в layout
 
-### ✅ Основные
-- [completed] Удалить отправку в Firestore из submit-order.ts (Telegram оставить)
-- [completed] Заменить динамические товары на статические данные
-- [completed] Удалить неиспользуемые файлы (useProducts, imageUtils, firestore.ts)
-- [completed] Оптимизировать размер бандла и CSS
-- [completed] Настроить webpack оптимизации
-- [ ] Оптимизировать видео файлы (сжатие) - требует FFmpeg
+## Улучшение SEO
+- [x] completed: Добавить structured data (JSON-LD) для организации
+- [x] completed: Улучшить Open Graph метатеги
+- [x] completed: Добавить локальные SEO метатеги (адрес, телефон, часы работы)
+- [x] completed: Создать более детальный sitemap.xml
+- [x] completed: Добавить canonical URL
+- [x] completed: Улучшить robots.txt
+- [ ] in_progress: Добавить meta теги для социальных сетей
 
-### ✅ Сохранить
-- [completed] Telegram функциональность (оставить как есть)
-- [completed] Все анимации (framer-motion)
-- [completed] Вся логика работы с корзиной
-- [completed] UI/UX и дизайн
-
-### ✅ Дополнительные оптимизации
-- [completed] Настроить lazy loading для компонентов
-- [completed] Оптимизировать CSS (удалить неиспользуемые стили)
-- [completed] Добавить Suspense для лучшей загрузки
-- [completed] Настроить code splitting и минификацию
-- [ ] Добавить сервис воркер для кеширования
-
-### ✅ Проверки
-- [completed] Тестирование функциональности
-- [completed] Проверка размера бандла
-- [completed] Исправление всех ошибок линтера
-- [completed] Деплой в Git репозиторий
-- [completed] Финальное тестирование
-
-## ИТОГ
-✅ **Все основные задачи выполнены!**
-- Удалена отправка в Firestore (оставлен только Telegram)
-- Заменены динамические данные на статические
-- Удалены неиспользуемые файлы
-- Добавлен lazy loading и Suspense
-- Оптимизирован webpack и Next.js конфиг
-- Код запушен в GitHub через токен
-- Сайт полностью функционален
+## Git и деплой
+- [ ] Настроить git remote с токеном
+- [ ] Сделать commit и push изменений
