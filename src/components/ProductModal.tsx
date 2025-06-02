@@ -3,6 +3,7 @@
 import { motion, AnimatePresence } from 'framer-motion'
 import { X, ChevronLeft, ChevronRight, Heart, ShoppingCart } from 'lucide-react'
 import { useState } from 'react'
+import OptimizedImage from './OptimizedImage'
 import type { Product } from '@/types/product'
 
 interface ProductModalProps {
@@ -53,10 +54,12 @@ export default function ProductModal({ product, isOpen, onClose, onContactClick 
               <div className="lg:w-1/2 relative bg-zinc-50">
                 {product.images.length > 0 ? (
                   <div className="relative h-64 lg:h-full">
-                    <img
+                    <OptimizedImage
                       src={product.images[currentImageIndex]}
                       alt={product.name}
                       className="w-full h-full object-cover"
+                      fallbackClassName="h-full"
+                      loading="eager"
                     />
 
                     {/* Кнопки навигации по изображениям */}
@@ -117,10 +120,11 @@ export default function ProductModal({ product, isOpen, onClose, onContactClick 
                               : 'border-white/50 hover:border-white'
                           }`}
                         >
-                          <img
+                          <OptimizedImage
                             src={image}
                             alt={`${product.name} ${index + 1}`}
                             className="w-full h-full object-cover"
+                            fallbackClassName="w-full h-full"
                           />
                         </button>
                       ))}

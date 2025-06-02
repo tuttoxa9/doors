@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
 import { collection, getDocs, doc, getDoc, query, where, orderBy } from 'firebase/firestore'
-import { ref, getDownloadURL } from 'firebase/storage'
-import { db, storage } from '@/lib/firebase'
+import { db } from '@/lib/firebase'
+import { getImageUrls } from '@/lib/imageUtils'
 import type { Product, ProductCategory } from '@/types/product'
 
 export const useProducts = (category?: ProductCategory) => {
@@ -29,17 +29,10 @@ export const useProducts = (category?: ProductCategory) => {
           const data = docSnapshot.data()
 
           // Загружаем URLs изображений из Firebase Storage
-          const imageUrls: string[] = []
+          let imageUrls: string[] = []
           if (data.images && Array.isArray(data.images)) {
-            for (const imagePath of data.images) {
-              try {
-                const imageRef = ref(storage, imagePath)
-                const url = await getDownloadURL(imageRef)
-                imageUrls.push(url)
-              } catch (imageError) {
-                console.warn(`Failed to load image: ${imagePath}`, imageError)
-              }
-            }
+            const urls = await getImageUrls(data.images)
+            imageUrls = urls.filter((url): url is string => url !== null)
           }
 
           productsData.push({
@@ -92,17 +85,10 @@ export const useProduct = (id: string) => {
           const data = docSnapshot.data()
 
           // Загружаем URLs изображений из Firebase Storage
-          const imageUrls: string[] = []
+          let imageUrls: string[] = []
           if (data.images && Array.isArray(data.images)) {
-            for (const imagePath of data.images) {
-              try {
-                const imageRef = ref(storage, imagePath)
-                const url = await getDownloadURL(imageRef)
-                imageUrls.push(url)
-              } catch (imageError) {
-                console.warn(`Failed to load image: ${imagePath}`, imageError)
-              }
-            }
+            const urls = await getImageUrls(data.images)
+            imageUrls = urls.filter((url): url is string => url !== null)
           }
 
           setProduct({

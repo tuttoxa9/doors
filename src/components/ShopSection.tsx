@@ -5,6 +5,7 @@ import { ArrowRight, Eye, Loader2 } from 'lucide-react'
 import { useState } from 'react'
 import { useProducts } from '@/hooks/useProducts'
 import ProductModal from './ProductModal'
+import OptimizedImage from './OptimizedImage'
 import type { Product } from '@/types/product'
 
 interface ShopSectionProps {
@@ -180,10 +181,11 @@ export default function ShopSection({ onContactClick }: ShopSectionProps) {
               >
                 <div className="relative overflow-hidden">
                   {product.images && product.images.length > 0 ? (
-                    <img
+                    <OptimizedImage
                       src={product.images[0]}
                       alt={product.name}
                       className="w-full h-64 object-cover group-hover:scale-105 transition-transform duration-300"
+                      fallbackClassName="w-full h-64 group-hover:bg-zinc-200 transition-colors duration-300"
                     />
                   ) : (
                     <div className="w-full h-64 bg-zinc-100 flex items-center justify-center group-hover:bg-zinc-200 transition-colors duration-300">
