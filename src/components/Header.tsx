@@ -1,3 +1,4 @@
+```tsx
 'use client'
 
 import { motion } from 'framer-motion'
@@ -52,8 +53,8 @@ export default function Header({ scrollY, activeSection, setActiveSection, onCon
               className={cn(
                 "text-lg font-medium transition-colors duration-200",
                 activeSection === 'main'
-                  ? "text-zinc-900 font-semibold"
-                  : "text-white hover:text-zinc-900"
+                  ? "text-zinc-900 font-semibold bg-white"
+                  : "bg-zinc-900 text-white hover:bg-zinc-800"
               )}
             >
               Главная
@@ -63,8 +64,8 @@ export default function Header({ scrollY, activeSection, setActiveSection, onCon
               className={cn(
                 "text-lg font-medium transition-colors duration-200",
                 activeSection === 'shop'
-                  ? "text-zinc-900 font-semibold"
-                  : "text-white hover:text-zinc-900"
+                  ? "text-zinc-900 font-semibold bg-white"
+                  : "bg-zinc-900 text-white hover:bg-zinc-800"
               )}
             >
               Магазин
@@ -83,7 +84,11 @@ export default function Header({ scrollY, activeSection, setActiveSection, onCon
 
           {/* Mobile Navigation Button */}
           <button
-            className="md:hidden bg-white/90 text-zinc-900 px-4 py-2 rounded-full font-medium hover:bg-white transition-colors duration-200"
+            className={
+              activeSection === 'main'
+                ? 'md:hidden bg-white text-zinc-900 px-4 py-2 rounded-full font-medium hover:bg-zinc-100 transition-colors duration-200'
+                : 'md:hidden bg-zinc-900 text-white px-4 py-2 rounded-full font-medium hover:bg-zinc-800 transition-colors duration-200'
+            }
             onClick={() => setActiveSection(activeSection === 'main' ? 'shop' : 'main')}
           >
             {activeSection === 'main' ? 'Магазин' : 'Главная'}
@@ -93,3 +98,4 @@ export default function Header({ scrollY, activeSection, setActiveSection, onCon
     </motion.header>
   )
 }
+```

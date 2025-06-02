@@ -99,7 +99,7 @@ export default function ShopSection({ onContactClick }: ShopSectionProps) {
           <h2
             className="text-3xl font-bold text-zinc-900 mb-16 text-center"
           >
-            Портфолио работ
+            Магазин
           </h2>
 
           {loading ? (
