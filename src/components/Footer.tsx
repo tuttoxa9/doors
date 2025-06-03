@@ -1,5 +1,7 @@
 'use client'
 
+import Link from 'next/link'
+
 export default function Footer() {
   return (
     <footer className="bg-zinc-100 py-8">
@@ -23,9 +25,9 @@ export default function Footer() {
           </div>
 
           <div className="flex space-x-6 mt-4 md:mt-0">
-            <a href="/privacy" className="text-zinc-600 hover:text-zinc-900 transition-colors duration-200 font-pusia-bold">
+            <Link href="/privacy" className="text-zinc-600 hover:text-zinc-900 transition-colors duration-200 font-pusia-bold">
               Политика конфиденциальности
-            </a>
+            </Link>
           </div>
         </div>
       </div>
