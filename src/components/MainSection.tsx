@@ -122,26 +122,43 @@ export default function MainSection({ showContactForm = false, setShowContactFor
             </div>
           </div>
 
-          {/* Подзаголовок с анимацией и компактным блюром */}
+          {/* Подзаголовок с анимацией и адаптивным блюром */}
           <div className="flex justify-center mb-8">
-            <div className="relative inline-block min-h-[72px] sm:min-h-[80px] md:min-h-[96px]">
-              {/* Компактный блюр за подзаголовком - подстраивается под размер текста */}
-              <div className="absolute inset-0">
-                <div className="absolute inset-0 backdrop-blur-md bg-black/25 rounded-xl transform scale-105" />
-              </div>
-              <div className="relative z-10 px-6 py-3 flex items-center justify-center">
+            <div className="relative">
+              <div className="relative z-10 px-6 py-3">
                 <AnimatePresence mode="wait">
-                  <motion.p
+                  <motion.div
                     key={currentTextIndex}
-                    className="text-lg sm:text-xl md:text-2xl text-white/95 max-w-3xl leading-relaxed"
-                    style={{ fontFamily: 'system-ui, sans-serif' }}
+                    className="relative"
                     initial={{ opacity: 0, y: 20, filter: 'blur(8px)' }}
                     animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
                     exit={{ opacity: 0, y: -20, filter: 'blur(8px)' }}
                     transition={{ duration: 0.7, ease: 'easeInOut' }}
+                    layout
                   >
-                    {rotatingTexts[currentTextIndex]}
-                  </motion.p>
+                    {/* Динамический блюрный фон */}
+                    <motion.div
+                      className="absolute inset-0 backdrop-blur-md bg-black/25 rounded-xl"
+                      initial={{ opacity: 0, scale: 0.9 }}
+                      animate={{ opacity: 1, scale: 1 }}
+                      exit={{ opacity: 0, scale: 0.9 }}
+                      transition={{ duration: 0.6, ease: 'easeInOut' }}
+                      style={{
+                        marginTop: '-8px',
+                        marginBottom: '-8px',
+                        marginLeft: '-12px',
+                        marginRight: '-12px'
+                      }}
+                      layout
+                    />
+                    {/* Текст */}
+                    <p
+                      className="text-lg sm:text-xl md:text-2xl text-white/95 max-w-3xl leading-relaxed text-center relative z-10"
+                      style={{ fontFamily: 'system-ui, sans-serif' }}
+                    >
+                      {rotatingTexts[currentTextIndex]}
+                    </p>
+                  </motion.div>
                 </AnimatePresence>
               </div>
             </div>
