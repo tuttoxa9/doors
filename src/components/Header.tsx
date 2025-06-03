@@ -49,28 +49,34 @@ export default function Header({ scrollY, activeSection, setActiveSection, onCon
           </div>
 
           {/* Desktop Navigation */}
-          <div className="hidden md:flex items-center space-x-8">
+          <div className="hidden md:flex items-center space-x-4">
             <button
               onClick={() => setActiveSection('main')}
               className={cn(
-                "px-6 py-2 rounded-full text-lg font-medium transition-colors duration-200",
+                "px-6 py-3 rounded-full text-lg font-medium transition-all duration-300 shadow-lg relative overflow-hidden",
                 activeSection === 'main'
-                  ? "text-zinc-900 font-semibold bg-white"
-                  : "bg-zinc-900 text-white hover:bg-zinc-800"
+                  ? "bg-gradient-to-r from-blue-500 to-blue-600 text-white shadow-blue-500/30 scale-105 border-2 border-blue-300"
+                  : "bg-white/90 text-zinc-900 hover:bg-white hover:shadow-xl hover:scale-105 border-2 border-transparent"
               )}
             >
-              Главная
+              <span className="relative z-10">🏠 Главная</span>
+              {activeSection === 'main' && (
+                <div className="absolute inset-0 bg-gradient-to-r from-blue-400 to-blue-500 opacity-20 animate-pulse" />
+              )}
             </button>
             <button
               onClick={() => setActiveSection('shop')}
               className={cn(
-                "px-6 py-2 rounded-full text-lg font-medium transition-colors duration-200",
+                "px-6 py-3 rounded-full text-lg font-medium transition-all duration-300 shadow-lg relative overflow-hidden",
                 activeSection === 'shop'
-                  ? "text-zinc-900 font-semibold bg-white"
-                  : "bg-zinc-900 text-white hover:bg-zinc-800"
+                  ? "bg-gradient-to-r from-green-500 to-green-600 text-white shadow-green-500/30 scale-105 border-2 border-green-300"
+                  : "bg-white/90 text-zinc-900 hover:bg-white hover:shadow-xl hover:scale-105 border-2 border-transparent"
               )}
             >
-              Магазин
+              <span className="relative z-10">🛒 Магазин</span>
+              {activeSection === 'shop' && (
+                <div className="absolute inset-0 bg-gradient-to-r from-green-400 to-green-500 opacity-20 animate-pulse" />
+              )}
             </button>
           </div>
 
@@ -139,14 +145,23 @@ export default function Header({ scrollY, activeSection, setActiveSection, onCon
 
             {/* Mobile Navigation Button */}
             <button
-              className={
+              className={cn(
+                "px-4 py-2 rounded-full font-medium transition-all duration-300 shadow-lg border-2 relative overflow-hidden",
                 activeSection === 'main'
-                  ? 'bg-white text-zinc-900 px-4 py-2 rounded-full font-medium hover:bg-zinc-100 transition-colors duration-200'
-                  : 'bg-zinc-900 text-white px-4 py-2 rounded-full font-medium hover:bg-zinc-800 transition-colors duration-200'
-              }
+                  ? 'bg-gradient-to-r from-blue-500 to-blue-600 text-white shadow-blue-500/30 border-blue-300 scale-105'
+                  : 'bg-gradient-to-r from-green-500 to-green-600 text-white shadow-green-500/30 border-green-300 scale-105'
+              )}
               onClick={() => setActiveSection(activeSection === 'main' ? 'shop' : 'main')}
             >
-              {activeSection === 'main' ? 'Магазин' : 'Главная'}
+              <span className="relative z-10">
+                {activeSection === 'main' ? '🛒 Магазин' : '🏠 Главная'}
+              </span>
+              <div className={cn(
+                "absolute inset-0 opacity-20 animate-pulse",
+                activeSection === 'main'
+                  ? "bg-gradient-to-r from-green-400 to-green-500"
+                  : "bg-gradient-to-r from-blue-400 to-blue-500"
+              )} />
             </button>
           </div>
         </nav>
