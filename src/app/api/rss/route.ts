@@ -97,7 +97,7 @@ export async function GET() {
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>MAESTRO - Шкафы на заказ в Минске</title>
-    <description>Новости и обновления от компании MAESTRO. Изготовление качественной мебели на заказ в Минске. Встроенные шкафы, гардеробные, детская мебель по индивидуальным размерам.</description>
+    <description>Новости и обновления от компании MAESTRO. Изготовление качественной мебели на заказ в Минске. Шкафы, гардеробные, детская мебель по индивидуальным размерам.</description>
     <link>${baseUrl}</link>
     <language>ru-RU</language>
     <lastBuildDate>${lastBuildDate}</lastBuildDate>

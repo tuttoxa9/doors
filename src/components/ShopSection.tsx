@@ -227,9 +227,9 @@ export default function ShopSection({ onContactClick }: ShopSectionProps) {
           </h2>
           <div className="grid md:grid-cols-2 gap-12 items-center">
             <div>
-              <h3 className="text-2xl font-bold text-zinc-900 mb-6">Шкафы распашные на заказ</h3>
+              <h3 className="text-2xl font-bold text-zinc-900 mb-6">Шкафы на заказ</h3>
               <p className="text-zinc-600 mb-6 leading-relaxed">
-                Наши шкафы распашные идеально вписываются в любой интерьер, делаются на заказ, с учётом особенностей помещения и личных предпочтений. Мы предлагаем широкий выбор
+                Наши шкафы идеально вписываются в любой интерьер, делаются на заказ, с учётом особенностей помещения и личных предпочтений. Мы предлагаем широкий выбор
                 материалов, цветов и конфигураций.
               </p>
               <ul className="space-y-3 text-zinc-600">
@@ -253,7 +253,7 @@ export default function ShopSection({ onContactClick }: ShopSectionProps) {
                   <svg className="w-20 h-20 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1} d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
                   </svg>
-                  <p className="text-lg font-medium">Шкафы распашные на заказ</p>
+                  <p className="text-lg font-medium">Шкафы на заказ</p>
                   <p className="text-sm">Изображение будет загружено из Firebase Storage</p>
                 </div>
               </div>

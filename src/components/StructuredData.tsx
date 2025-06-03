@@ -4,7 +4,7 @@ export default function StructuredData() {
     "@type": "LocalBusiness",
     "name": "MAESTRO",
     "alternateName": "Maestro Works",
-    "description": "Изготовление качественных шкафов на заказ в Минске. Встроенные шкафы, гардеробные, детская мебель по индивидуальным размерам.",
+    "description": "Изготовление качественных шкафов на заказ в Минске. Шкафы, гардеробные, детская мебель по индивидуальным размерам.",
     "url": "https://maestroworks.ru",
     "telephone": "+375291234567",
     "email": "info@maestroworks.ru",
@@ -55,8 +55,8 @@ export default function StructuredData() {
           "@type": "Offer",
           "itemOffered": {
             "@type": "Service",
-            "name": "Встроенные шкафы на заказ",
-            "description": "Изготовление встроенных шкафов по индивидуальным размерам"
+            "name": "Шкафы на заказ",
+            "description": "Изготовление шкафов по индивидуальным размерам"
           }
         },
         {

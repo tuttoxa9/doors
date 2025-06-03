@@ -115,7 +115,7 @@ export default function MainSection({ showContactForm = false, setShowContactFor
                 className="text-lg sm:text-xl md:text-2xl text-white/95 max-w-3xl leading-relaxed px-6 py-3 relative z-10"
                 style={{ fontFamily: 'system-ui, sans-serif' }}
               >
-                Создаем уникальные шкафы распашные, так как они идеально вписываются в любой интерьер, делаются на заказ, с учётом особенностей помещения и личных предпочтений
+                Создаем уникальные шкафы, так как они идеально вписываются в любой интерьер, делаются на заказ, с учётом особенностей помещения и личных предпочтений
               </p>
             </div>
           </div>
@@ -296,7 +296,7 @@ export default function MainSection({ showContactForm = false, setShowContactFor
             {[
               {
                 name: "Мария Петрова",
-                review: "Заказывали шкафы распашные в спальню. Качество превзошло все ожидания! Очень довольны результатом.",
+                review: "Заказывали шкафы в спальню. Качество превзошло все ожидания! Очень довольны результатом.",
                 rating: 5
               },
               {

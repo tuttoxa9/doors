@@ -27,7 +27,6 @@ export interface ProductFormData {
 }
 
 export type ProductCategory =
-  | 'Шкафы-купе'
-  | 'Встроенные шкафы'
+  | 'Шкафы'
   | 'Гардеробные'
   | 'Детские шкафы'
