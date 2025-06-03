@@ -1,14 +1,19 @@
 User-agent: *
 Allow: /
 
-# Disallow admin areas
+# Disallow admin areas and temporary files
 Disallow: /admin/
 Disallow: /.netlify/
 Disallow: /api/
-# Allow RSS feed
+Disallow: /output/
+Disallow: /_next/static/chunks/
+Disallow: /*_buildManifest.js
+Disallow: /*_ssgManifest.js
+
+# Allow important API endpoints
 Allow: /api/rss
 
-# Allow all images
+# Allow all media files
 Allow: /images/
 Allow: /videos/
 Allow: /fonts/
@@ -17,6 +22,12 @@ Allow: /*.jpeg$
 Allow: /*.png$
 Allow: /*.webp$
 Allow: /*.svg$
+Allow: /*.mp4$
+
+# Allow important sections
+Allow: /#main
+Allow: /#shop
+Allow: /#faq
 
 # Sitemap locations for all domains
 Sitemap: https://maestroworks.ru/sitemap.xml

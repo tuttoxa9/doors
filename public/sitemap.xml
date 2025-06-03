@@ -10,28 +10,35 @@
   <!-- Primary domain: maestroworks.ru -->
   <url>
     <loc>https://maestroworks.ru</loc>
-    <lastmod>2025-06-02</lastmod>
-    <changefreq>weekly</changefreq>
+    <lastmod>2025-06-03</lastmod>
+    <changefreq>daily</changefreq>
     <priority>1.0</priority>
     <image:image>
       <image:loc>https://maestroworks.ru/showroom.webp</image:loc>
-      <image:title>MAESTRO - Шкафы на заказ в Минске</image:title>
-      <image:caption>Качественная мебель на заказ от компании MAESTRO</image:caption>
+      <image:title>MAESTRO - Шкафы на заказ в Минске от 290 BYN</image:title>
+      <image:caption>Качественная мебель на заказ от компании MAESTRO. Гарантия 5 лет, бесплатный замер</image:caption>
     </image:image>
   </url>
 
   <url>
     <loc>https://maestroworks.ru/#main</loc>
-    <lastmod>2025-06-02</lastmod>
-    <changefreq>monthly</changefreq>
+    <lastmod>2025-06-03</lastmod>
+    <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
 
   <url>
     <loc>https://maestroworks.ru/#shop</loc>
-    <lastmod>2025-06-02</lastmod>
-    <changefreq>weekly</changefreq>
+    <lastmod>2025-06-03</lastmod>
+    <changefreq>daily</changefreq>
     <priority>0.9</priority>
+  </url>
+
+  <url>
+    <loc>https://maestroworks.ru/#faq</loc>
+    <lastmod>2025-06-03</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
   </url>
 
   <url>

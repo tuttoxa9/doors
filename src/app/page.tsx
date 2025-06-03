@@ -7,6 +7,7 @@ import Header from '@/components/Header'
 // Lazy load компонентов для оптимизации
 const MainSection = lazy(() => import('@/components/MainSection'))
 const ShopSection = lazy(() => import('@/components/ShopSection'))
+const FAQ = lazy(() => import('@/components/FAQ'))
 const Footer = lazy(() => import('@/components/Footer'))
 const ContactModal = lazy(() => import('@/components/ContactModal'))
 const ShoppingCart = lazy(() => import('@/components/ShoppingCart'))
@@ -132,6 +133,11 @@ export default function Home() {
           )}
         </AnimatePresence>
       </main>
+
+      {/* FAQ Section - Always visible for SEO */}
+      <Suspense fallback={<div>Загрузка...</div>}>
+        <FAQ />
+      </Suspense>
 
       <Suspense fallback={<div>Загрузка...</div>}>
         <Footer />

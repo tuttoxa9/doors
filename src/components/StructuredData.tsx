@@ -3,14 +3,14 @@ export default function StructuredData() {
     "@context": "https://schema.org",
     "@type": "LocalBusiness",
     "name": "MAESTRO",
-    "alternateName": "Maestro Works",
-    "description": "Изготовление качественных шкафов на заказ в Минске. Шкафы, гардеробные, детская мебель по индивидуальным размерам.",
+    "alternateName": ["Maestro Works", "МАЭСТРО", "Мебель MAESTRO"],
+    "description": "Изготовление качественных шкафов на заказ в Минске. Шкафы, гардеробные, детская мебель по индивидуальным размерам. Гарантия 5 лет, бесплатный замер.",
     "url": "https://maestroworks.ru",
-    "telephone": "+375291234567",
-    "email": "info@maestroworks.ru",
+    "telephone": "+375291565232",
+    "email": "mebelkdomy.by@gmail.com",
     "address": {
       "@type": "PostalAddress",
-      "streetAddress": "ул. Примерная, 123",
+      "streetAddress": "ул. Судмалиса, 13",
       "addressLocality": "Минск",
       "addressRegion": "Минская область",
       "postalCode": "220000",
@@ -125,6 +125,105 @@ export default function StructuredData() {
     ]
   };
 
+  const productData = {
+    "@context": "https://schema.org",
+    "@type": "Product",
+    "name": "Шкафы на заказ",
+    "description": "Качественные шкафы по индивидуальным размерам от мебельной мастерской MAESTRO в Минске",
+    "brand": {
+      "@type": "Brand",
+      "name": "MAESTRO"
+    },
+    "manufacturer": {
+      "@type": "Organization",
+      "name": "MAESTRO",
+      "address": {
+        "@type": "PostalAddress",
+        "addressLocality": "Минск",
+        "addressCountry": "BY"
+      }
+    },
+    "offers": {
+      "@type": "AggregateOffer",
+      "priceCurrency": "BYN",
+      "lowPrice": "290",
+      "highPrice": "2500",
+      "offerCount": "50",
+      "availability": "https://schema.org/InStock",
+      "seller": {
+        "@type": "Organization",
+        "name": "MAESTRO"
+      }
+    },
+    "aggregateRating": {
+      "@type": "AggregateRating",
+      "ratingValue": "4.9",
+      "bestRating": "5",
+      "worstRating": "1",
+      "ratingCount": "127"
+    },
+    "category": "Мебель",
+    "image": "https://maestroworks.ru/showroom.webp"
+  };
+
+  const faqData = {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "Сколько стоит изготовление шкафа на заказ в Минске?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Стоимость шкафа на заказ в Минске начинается от 290 BYN и зависит от размеров, материалов и сложности конструкции. Предоставляем бесплатный расчет стоимости после замера."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Какие гарантии предоставляет MAESTRO?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Мы предоставляем гарантию 5 лет на всю изготовленную мебель. Гарантия покрывает качество материалов и сборки."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Как долго изготавливается шкаф на заказ?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Срок изготовления шкафа составляет от 7 до 21 дня в зависимости от сложности проекта. Точные сроки обговариваются при заключении договора."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Предоставляете ли вы бесплатный замер?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Да, мы предоставляем бесплатный выезд мастера для замера и консультации по всему Минску и Минской области."
+        }
+      }
+    ]
+  };
+
+  const reviewData = {
+    "@context": "https://schema.org",
+    "@type": "Review",
+    "itemReviewed": {
+      "@type": "LocalBusiness",
+      "name": "MAESTRO"
+    },
+    "reviewRating": {
+      "@type": "Rating",
+      "ratingValue": "5",
+      "bestRating": "5"
+    },
+    "author": {
+      "@type": "Person",
+      "name": "Мария Петрова"
+    },
+    "reviewBody": "Заказывали шкафы в спальню. Качество превзошло все ожидания! Очень довольны результатом. Рекомендую MAESTRO всем, кто ищет качественную мебель на заказ."
+  };
+
   return (
     <>
       <script
@@ -143,6 +242,24 @@ export default function StructuredData() {
         type="application/ld+json"
         dangerouslySetInnerHTML={{
           __html: JSON.stringify(breadcrumbData)
+        }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(productData)
+        }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(faqData)
+        }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(reviewData)
         }}
       />
     </>

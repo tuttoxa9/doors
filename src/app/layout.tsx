@@ -3,6 +3,7 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import ClientBody from "./ClientBody";
 import StructuredData from "../components/StructuredData";
+import SEOHead from "../components/SEOHead";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -15,9 +16,9 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "MAESTRO - Шкафы на заказ в Минске | Мебель по индивидуальным размерам",
-  description: "Изготовление шкафов на заказ в Минске. Шкафы, гардеробные, детские шкафы по индивидуальным размерам. Качественная мебель на заказ с гарантией 5 лет. Бесплатная консультация и 3D-визуализация.",
-  keywords: "шкафы на заказ, шкафы Минск, шкафы по размерам, мебель на заказ Минск, изготовление шкафов, шкафы на заказ Минск, гардеробные на заказ, детские шкафы, MAESTRO",
+  title: "MAESTRO - Шкафы на заказ в Минске | Изготовление мебели по индивидуальным размерам | Гарантия качества",
+  description: "⭐ Изготовление качественных шкафов на заказ в Минске от 290 BYN. Индивидуальные размеры, бесплатный замер, 3D-визуализация. Гардеробные, детские шкафы. Гарантия 5 лет. ☎️ +375291565232",
+  keywords: "шкафы на заказ Минск, мебель на заказ Беларусь, изготовление шкафов Минск, шкафы по индивидуальным размерам, гардеробные на заказ, детские шкафы Минск, встроенные шкафы, мебель по размерам, MAESTRO мебель, шкафы недорого Минск, качественные шкафы, мебельная мастерская Минск, заказать шкаф в Минске, шкафы производство Беларусь, мебель на заказ цены",
   authors: [{ name: "MAESTRO" }],
   creator: "MAESTRO",
   publisher: "MAESTRO",
@@ -39,37 +40,51 @@ export const metadata: Metadata = {
     'business:contact_data:phone_number': '+375 (29) 123-45-67',
   },
   openGraph: {
-    title: "MAESTRO - Шкафы на заказ в Минске",
-    description: "Изготовление качественных шкафов на заказ в Минске. Шкафы, гардеробные по индивидуальным размерам.",
+    title: "MAESTRO - Шкафы на заказ в Минске | Мебель по индивидуальным размерам",
+    description: "⭐ Изготовление качественных шкафов на заказ в Минске от 290 BYN. Бесплатный замер, 3D-визуализация, гарантия 5 лет. ☎️ +375291565232",
     url: "https://maestroworks.ru",
-    siteName: "MAESTRO",
-    locale: "ru_RU",
+    siteName: "MAESTRO - Мебель на заказ",
+    locale: "ru_BY",
     type: "website",
     images: [
       {
         url: "https://maestroworks.ru/showroom.webp",
         width: 1200,
         height: 630,
-        alt: "MAESTRO - Шкафы на заказ в Минске",
+        alt: "MAESTRO - Мебельная мастерская в Минске. Шкафы на заказ по индивидуальным размерам",
       }
     ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "MAESTRO - Шкафы на заказ в Минске",
-    description: "Качественные шкафы на заказ по индивидуальным размерам в Минске",
+    title: "MAESTRO - Шкафы на заказ в Минске | От 290 BYN",
+    description: "⭐ Качественные шкафы на заказ по индивидуальным размерам. Бесплатный замер и 3D-визуализация. Гарантия 5 лет",
     images: ["https://maestroworks.ru/showroom.webp"],
+    site: "@maestro_by",
   },
   robots: {
     index: true,
     follow: true,
+    nocache: false,
     googleBot: {
       index: true,
       follow: true,
+      noimageindex: false,
       'max-video-preview': -1,
       'max-image-preview': 'large',
       'max-snippet': -1,
     },
+  },
+  other: {
+    'mobile-web-app-capable': 'yes',
+    'apple-mobile-web-app-capable': 'yes',
+    'apple-mobile-web-app-status-bar-style': 'black-translucent',
+    'theme-color': '#000000',
+    'msapplication-TileColor': '#000000',
+    'geo.region': 'BY-MI',
+    'geo.placename': 'Минск',
+    'geo.position': '53.9006;27.5590',
+    'ICBM': '53.9006, 27.5590'
   },
   verification: {
     google: 'your-google-verification-code',
@@ -94,12 +109,13 @@ export default function RootLayout({
         <meta name="msapplication-TileColor" content="#000000" />
         <meta name="apple-mobile-web-app-capable" content="yes" />
         <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
-        <meta name="format-detection" content="telephone=+375291234567" />
-        <meta property="business:contact_data:street_address" content="ул. Примерная, 123" />
+        <meta name="format-detection" content="telephone=+375291565232" />
+        <meta property="business:contact_data:street_address" content="ул. Судмалиса, 13" />
         <meta property="business:contact_data:locality" content="Минск" />
         <meta property="business:contact_data:region" content="Минская область" />
         <meta property="business:contact_data:postal_code" content="220000" />
         <meta property="business:contact_data:country_name" content="Беларусь" />
+        <SEOHead />
         <StructuredData />
       </head>
       <body suppressHydrationWarning className="antialiased">
