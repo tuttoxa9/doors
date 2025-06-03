@@ -115,7 +115,7 @@ export default function MainSection({ showContactForm = false, setShowContactFor
                 className="text-lg sm:text-xl md:text-2xl text-white/95 max-w-3xl leading-relaxed px-6 py-3 relative z-10"
                 style={{ fontFamily: 'system-ui, sans-serif' }}
               >
-                Создаем уникальные шкафы, так как они идеально вписываются в любой интерьер, делаются на заказ, с учётом особенностей помещения и личных предпочтений
+                Шкафы, которые работают именно для вас. Каждый сантиметр под ваши нужды.
               </p>
             </div>
           </div>
@@ -177,8 +177,8 @@ export default function MainSection({ showContactForm = false, setShowContactFor
                     4
                   </div>
                   <div>
-                    <h3 className="text-xl font-semibold text-zinc-900 mb-2 font-durik">Установка</h3>
-                    <p className="text-zinc-600 font-durik">Доставляем и устанавливаем шкаф в вашем доме с гарантией</p>
+                    <h3 className="text-xl font-semibold text-zinc-900 mb-2 font-durik">Доставка</h3>
+                    <p className="text-zinc-600 font-durik">Доставляем по всей стране и устанавливаем с гарантией</p>
                   </div>
                 </div>
               </div>
