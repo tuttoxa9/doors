@@ -1,7 +1,7 @@
 'use client'
 
-import { motion } from 'framer-motion'
-import { useState } from 'react'
+import { motion, AnimatePresence } from 'framer-motion'
+import { useState, useEffect } from 'react'
 import { Star, ArrowRight, Phone, Mail, MapPin, Check, Loader2, CheckCircle, XCircle } from 'lucide-react'
 import VideoBackground from './VideoBackground'
 
@@ -20,6 +20,16 @@ export default function MainSection({ showContactForm = false, setShowContactFor
   })
   const [submissionStatus, setSubmissionStatus] = useState<SubmissionStatus>('idle')
   const [errorMessage, setErrorMessage] = useState('')
+  const [currentTextIndex, setCurrentTextIndex] = useState(0)
+
+  const rotatingTexts = [
+    "Шкафы, которые работают именно для вас. Каждый сантиметр под ваши нужды.",
+    "Тумбочки? Комоды? Да всё что угодно! Главное — с душой.",
+    "Превращаем хаос в порядок, а пустые стены — в произведения искусства.",
+    "Мебель, которая не стесняется быть особенной.",
+    "От 'куда это поставить?' до 'вау, как же круто!'",
+    "Делаем так, чтобы ваши вещи чувствовали себя как дома."
+  ]
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -81,6 +91,14 @@ export default function MainSection({ showContactForm = false, setShowContactFor
 
   const isPhoneValid = formData.phone.length === 13 // +375 + 9 digits
 
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCurrentTextIndex((prev) => (prev + 1) % rotatingTexts.length)
+    }, 4000) // Change text every 4 seconds
+
+    return () => clearInterval(interval)
+  }, [])
+
   return (
     <div>
       {/* Hero Section */}
@@ -104,19 +122,28 @@ export default function MainSection({ showContactForm = false, setShowContactFor
             </div>
           </div>
 
-          {/* Подзаголовок с компактным блюром */}
+          {/* Подзаголовок с анимацией и компактным блюром */}
           <div className="flex justify-center mb-8">
-            <div className="relative inline-block">
+            <div className="relative inline-block min-h-[72px] sm:min-h-[80px] md:min-h-[96px]">
               {/* Компактный блюр за подзаголовком - подстраивается под размер текста */}
               <div className="absolute inset-0">
                 <div className="absolute inset-0 backdrop-blur-md bg-black/25 rounded-xl transform scale-105" />
               </div>
-              <p
-                className="text-lg sm:text-xl md:text-2xl text-white/95 max-w-3xl leading-relaxed px-6 py-3 relative z-10"
-                style={{ fontFamily: 'system-ui, sans-serif' }}
-              >
-                Шкафы, которые работают именно для вас. Каждый сантиметр под ваши нужды.
-              </p>
+              <div className="relative z-10 px-6 py-3 flex items-center justify-center">
+                <AnimatePresence mode="wait">
+                  <motion.p
+                    key={currentTextIndex}
+                    className="text-lg sm:text-xl md:text-2xl text-white/95 max-w-3xl leading-relaxed"
+                    style={{ fontFamily: 'system-ui, sans-serif' }}
+                    initial={{ opacity: 0, y: 20, filter: 'blur(8px)' }}
+                    animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
+                    exit={{ opacity: 0, y: -20, filter: 'blur(8px)' }}
+                    transition={{ duration: 0.7, ease: 'easeInOut' }}
+                  >
+                    {rotatingTexts[currentTextIndex]}
+                  </motion.p>
+                </AnimatePresence>
+              </div>
             </div>
           </div>
 
@@ -360,8 +387,6 @@ export default function MainSection({ showContactForm = false, setShowContactFor
           </div>
         </div>
       </section>
-
-
     </div>
   )
 }
