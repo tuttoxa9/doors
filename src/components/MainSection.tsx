@@ -15,7 +15,7 @@ type SubmissionStatus = 'idle' | 'loading' | 'success' | 'error'
 export default function MainSection({ showContactForm = false, setShowContactForm }: MainSectionProps) {
   const [formData, setFormData] = useState({
     name: '',
-    phone: '+375',
+    phone: '+375291565232',
     comment: ''
   })
   const [submissionStatus, setSubmissionStatus] = useState<SubmissionStatus>('idle')
@@ -43,7 +43,7 @@ export default function MainSection({ showContactForm = false, setShowContactFor
         setTimeout(() => {
           setShowContactForm?.(false)
           setSubmissionStatus('idle')
-          setFormData({ name: '', phone: '+375', comment: '' })
+          setFormData({ name: '', phone: '+375291565232', comment: '' })
         }, 2000)
       } else {
         setSubmissionStatus('error')
@@ -115,7 +115,7 @@ export default function MainSection({ showContactForm = false, setShowContactFor
                 className="text-lg sm:text-xl md:text-2xl text-white/95 max-w-3xl leading-relaxed px-6 py-3 relative z-10"
                 style={{ fontFamily: 'system-ui, sans-serif' }}
               >
-                Создаем уникальные решения для хранения, которые идеально впишутся в ваш интерьер
+                Создаем уникальные шкафы распашные, так как они идеально вписываются в любой интерьер, делаются на заказ, с учётом особенностей помещения и личных предпочтений
               </p>
             </div>
           </div>
@@ -178,7 +178,7 @@ export default function MainSection({ showContactForm = false, setShowContactFor
                   </div>
                   <div>
                     <h3 className="text-xl font-semibold text-zinc-900 mb-2 font-durik">Установка</h3>
-                    <p className="text-zinc-600 font-durik">Доставляем и устанавливаем шкаф в вашем доме с гарантией качества</p>
+                    <p className="text-zinc-600 font-durik">Доставляем и устанавливаем шкаф в вашем доме с гарантией</p>
                   </div>
                 </div>
               </div>
@@ -296,7 +296,7 @@ export default function MainSection({ showContactForm = false, setShowContactFor
             {[
               {
                 name: "Мария Петрова",
-                review: "Заказывали шкаф-купе в спальню. Качество превзошло все ожидания! Очень довольны результатом.",
+                review: "Заказывали шкафы распашные в спальню. Качество превзошло все ожидания! Очень довольны результатом.",
                 rating: 5
               },
               {
@@ -341,21 +341,21 @@ export default function MainSection({ showContactForm = false, setShowContactFor
             >
               <Phone className="w-12 h-12 mb-4" />
               <h3 className="text-xl font-semibold mb-2 font-pusia-bold">Телефон</h3>
-              <p className="text-zinc-300 font-pusia-bold">+7 (999) 123-45-67</p>
+              <p className="text-zinc-300 font-pusia-bold">+375291565232</p>
             </div>
             <div
               className="flex flex-col items-center"
             >
               <Mail className="w-12 h-12 mb-4" />
               <h3 className="text-xl font-semibold mb-2 font-pusia-bold">Email</h3>
-              <p className="text-zinc-300 font-pusia-bold">info@maestro-furniture.ru</p>
+              <p className="text-zinc-300 font-pusia-bold">mebelkdomy.by@gmail.com</p>
             </div>
             <div
               className="flex flex-col items-center"
             >
               <MapPin className="w-12 h-12 mb-4" />
               <h3 className="text-xl font-semibold mb-2 font-pusia-bold">Адрес</h3>
-              <p className="text-zinc-300 font-pusia-bold">г. Москва, ул. Мебельная, 123</p>
+              <p className="text-zinc-300 font-pusia-bold">г.Минск, ул. Судмалиса, 13</p>
             </div>
           </div>
         </div>

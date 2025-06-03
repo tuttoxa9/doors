@@ -14,7 +14,7 @@ type SubmissionStatus = 'idle' | 'loading' | 'success' | 'error'
 export default function ContactModal({ isOpen, onClose }: ContactModalProps) {
   const [formData, setFormData] = useState({
     name: '',
-    phone: '+375',
+    phone: '+375291565232',
     comment: ''
   })
   const [submissionStatus, setSubmissionStatus] = useState<SubmissionStatus>('idle')
@@ -42,7 +42,7 @@ export default function ContactModal({ isOpen, onClose }: ContactModalProps) {
         setTimeout(() => {
           onClose()
           setSubmissionStatus('idle')
-          setFormData({ name: '', phone: '+375', comment: '' })
+          setFormData({ name: '', phone: '+375291565232', comment: '' })
         }, 2000)
       } else {
         setSubmissionStatus('error')
